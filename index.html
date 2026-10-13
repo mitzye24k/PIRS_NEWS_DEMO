@@ -9,7 +9,29 @@
       href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: "Kantumruy Pro", sans-serif;
+      }
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #printableArea,
+        #printableArea * {
+          visibility: visible;
+        }
+        #printableArea {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
   </head>
   <body
     class="bg-slate-50 min-h-screen text-slate-800 flex items-center justify-center p-2 sm:p-6"
@@ -23,19 +45,11 @@
         id="langToggleBtn"
         class="bg-white border border-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold shadow-sm hover:bg-slate-100 transition flex items-center gap-2"
       >
-        <svg
-          class="w-4 h-4 text-slate-500"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-          />
-        </svg>
+        <img
+          src="https://api.iconify.design/lucide:globe.svg?color=%2364748b"
+          alt="Lang"
+          class="w-4 h-4 object-contain"
+        />
         <span id="currentLangLabel">KH / EN</span>
       </button>
     </div>
@@ -49,29 +63,11 @@
         <div
           class="inline-flex p-3.5 bg-indigo-50 text-indigo-600 rounded-2xl mb-3 shadow-inner"
         >
-          <svg
-            class="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 14l9-5-9-5-9 5 9 5z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-            />
-          </svg>
+          <img
+            src="https://api.iconify.design/lucide:graduation-cap.svg?color=%234f46e5"
+            alt="Logo"
+            class="w-8 h-8 object-contain"
+          />
         </div>
         <h1
           id="t_welcome"
@@ -197,19 +193,11 @@
             id="dashLangBtn"
             class="bg-slate-100 border border-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold hover:bg-slate-200 transition flex items-center gap-1.5"
           >
-            <svg
-              class="w-4 h-4 text-slate-500"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-              />
-            </svg>
+            <img
+              src="https://api.iconify.design/lucide:globe.svg?color=%2364748b"
+              alt="Lang"
+              class="w-4 h-4 object-contain"
+            />
             <span>KH/EN</span>
           </button>
           <button
@@ -221,6 +209,7 @@
         </div>
       </div>
 
+      <!-- Cards Stats (5 Cards without 1-week absence card) -->
       <div
         class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6"
       >
@@ -241,20 +230,12 @@
               0
             </h3>
           </div>
-          <div class="p-2 bg-white rounded-xl shadow-sm text-indigo-600">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
+          <div class="p-2 bg-white rounded-xl shadow-sm">
+            <img
+              src="https://api.iconify.design/lucide:users.svg?color=%234f46e5"
+              alt="Total"
+              class="w-6 h-6 object-contain"
+            />
           </div>
         </div>
         <div
@@ -274,20 +255,12 @@
               0
             </h3>
           </div>
-          <div class="p-2 bg-white rounded-xl shadow-sm text-emerald-600">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
+          <div class="p-2 bg-white rounded-xl shadow-sm">
+            <img
+              src="https://api.iconify.design/lucide:user.svg?color=%23059669"
+              alt="Male"
+              class="w-6 h-6 object-contain"
+            />
           </div>
         </div>
         <div
@@ -307,53 +280,37 @@
               0
             </h3>
           </div>
-          <div class="p-2 bg-white rounded-xl shadow-sm text-pink-600">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
+          <div class="p-2 bg-white rounded-xl shadow-sm">
+            <img
+              src="https://api.iconify.design/lucide:user.svg?color=%23db2777"
+              alt="Female"
+              class="w-6 h-6 object-contain"
+            />
           </div>
         </div>
         <div
-          class="bg-rose-50/50 border border-rose-100 p-4 rounded-2xl flex items-center justify-between"
+          class="bg-amber-50/50 border border-amber-100 p-4 rounded-2xl flex items-center justify-between"
         >
           <div>
             <p
-              id="t_cardAbsence"
-              class="text-[11px] text-rose-600 font-bold uppercase tracking-wider"
+              id="t_cardDailyAbsence"
+              class="text-[11px] text-amber-600 font-bold uppercase tracking-wider"
             >
-              អវត្តមាន (១សប្តាហ៍)
+              អវត្តមានប្រចាំថ្ងៃ
             </p>
             <h3
-              id="totalAbsences"
-              class="text-xl sm:text-2xl font-bold text-rose-900 mt-1"
+              id="totalDailyAbsences"
+              class="text-xl sm:text-2xl font-bold text-amber-900 mt-1"
             >
               0
             </h3>
           </div>
-          <div class="p-2 bg-white rounded-xl shadow-sm text-rose-600">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+          <div class="p-2 bg-white rounded-xl shadow-sm">
+            <img
+              src="https://api.iconify.design/lucide:user-check.svg?color=%23d97706"
+              alt="Daily"
+              class="w-6 h-6 object-contain"
+            />
           </div>
         </div>
         <div
@@ -373,24 +330,44 @@
               0
             </h3>
           </div>
-          <div class="p-2 bg-white rounded-xl shadow-sm text-purple-600">
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-              />
-            </svg>
+          <div class="p-2 bg-white rounded-xl shadow-sm">
+            <img
+              src="https://api.iconify.design/lucide:school.svg?color=%237c3aed"
+              alt="Class"
+              class="w-6 h-6 object-contain"
+            />
           </div>
         </div>
       </div>
 
+      <!-- Top Students Ranking Section -->
+      <div
+        class="mb-6 bg-gradient-to-r from-amber-50/80 via-yellow-50/40 to-indigo-50/60 p-4 sm:p-5 rounded-2xl border border-amber-200/60 shadow-sm"
+      >
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            id="t_topStudentsTitle"
+            class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"
+          >
+            <img
+              src="https://api.iconify.design/lucide:award.svg?color=%23d97706"
+              alt="Award"
+              class="w-5 h-5 object-contain"
+            />
+            សិស្សពូកែដែលមានពិន្ទុខ្ពស់ជាងគេ (Top Ranking)
+          </h3>
+          <span
+            class="text-xs bg-amber-100 text-amber-800 font-bold px-2.5 py-1 rounded-full"
+            >Top 5</span
+          >
+        </div>
+        <div
+          id="topStudentsContainer"
+          class="grid grid-cols-1 sm:grid-cols-5 gap-3"
+        ></div>
+      </div>
+
+      <!-- Admin Form (With both daily and 1-week absence input for Admin) -->
       <div
         id="adminFormContainer"
         class="hidden mb-6 bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 no-print"
@@ -399,19 +376,11 @@
           id="formTitle"
           class="text-base sm:text-lg font-bold text-indigo-700 mb-4 flex items-center gap-2"
         >
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
-          </svg>
+          <img
+            src="https://api.iconify.design/lucide:file-edit.svg?color=%234f46e5"
+            alt="Form"
+            class="w-5 h-5 object-contain"
+          />
           <span id="t_formHeader">បន្ថែមព័ត៌មានសិស្សថ្មី</span>
         </h2>
         <form
@@ -527,7 +496,7 @@
           </div>
 
           <div
-            class="sm:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-200"
+            class="sm:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-5 gap-3 pt-3 border-t border-slate-200"
           >
             <div>
               <label
@@ -576,6 +545,20 @@
             </div>
             <div>
               <label
+                id="t_lblDailyAbsenceInput"
+                class="block text-xs font-semibold text-amber-600 mb-1"
+                >អវត្តមានប្រចាំថ្ងៃ</label
+              >
+              <input
+                type="number"
+                id="dailyAbsenceDays"
+                min="0"
+                value="0"
+                class="w-full p-2 text-sm border border-amber-200 rounded-xl bg-white text-amber-600 font-bold focus:ring-2 focus:ring-amber-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label
                 id="t_lblAbsenceInput"
                 class="block text-xs font-semibold text-rose-600 mb-1"
                 >អវត្តមាន (១សប្តាហ៍)</label
@@ -611,26 +594,15 @@
         </form>
       </div>
 
-      <div
-        class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mb-4 no-print"
-      >
+      <!-- Search Bar -->
+      <div class="mb-4 no-print">
         <div class="relative w-full sm:w-80">
-          <span
-            class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <img
+              src="https://api.iconify.design/lucide:search.svg?color=%2394a3b8"
+              alt="Search"
+              class="w-4 h-4 object-contain"
+            />
           </span>
           <input
             type="text"
@@ -639,48 +611,9 @@
             class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-slate-50/50"
           />
         </div>
-        <div class="flex gap-2 justify-end">
-          <button
-            id="exportExcelBtn"
-            class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl hover:bg-emerald-700 transition text-sm font-medium flex items-center gap-1.5 shadow-sm"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-              />
-            </svg>
-            <span id="t_btnExcel">ទាញយក Excel</span>
-          </button>
-          <button
-            id="printBtn"
-            class="bg-slate-700 text-white px-4 py-2.5 rounded-xl hover:bg-slate-800 transition text-sm font-medium flex items-center gap-1.5 shadow-sm"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
-              />
-            </svg>
-            <span id="t_btnPrint">ព្រីន / PDF</span>
-          </button>
-        </div>
       </div>
 
+      <!-- Printable Table Area -->
       <div id="printableArea" class="flex-grow flex flex-col">
         <div class="hidden print:block text-center mb-4">
           <h2 id="t_printTitle" class="text-xl font-bold">
@@ -728,10 +661,10 @@
                   មធ្យភាគ (GPA)
                 </th>
                 <th
-                  id="th_absence"
+                  id="th_dailyAbsence"
                   class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
-                  អវត្តមាន
+                  អវ.ប្រចាំថ្ងៃ
                 </th>
                 <th
                   id="th_profile"
@@ -755,27 +688,57 @@
         </div>
       </div>
 
+      <!-- Bottom Action Buttons & Pagination -->
       <div
-        class="flex flex-col sm:flex-row justify-between items-center gap-3 mt-4 pt-3 border-t border-slate-100 no-print"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 mt-4 pt-4 border-t border-slate-100 no-print"
       >
-        <span
-          id="pageInfo"
-          class="text-xs sm:text-sm text-slate-500 font-medium"
-          >កំពុងបង្ហាញ...</span
+        <div class="flex gap-2 w-full sm:w-auto">
+          <button
+            id="exportExcelBtn"
+            class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl hover:bg-emerald-700 transition text-sm font-medium flex items-center justify-center gap-1.5 shadow-sm flex-1 sm:flex-none"
+          >
+            <img
+              src="https://api.iconify.design/lucide:file-spreadsheet.svg?color=%23ffffff"
+              alt="Excel"
+              class="w-4 h-4 object-contain"
+            />
+            <span id="t_btnExcel">ទាញយក Excel</span>
+          </button>
+          <button
+            id="printBtn"
+            class="bg-slate-700 text-white px-4 py-2.5 rounded-xl hover:bg-slate-800 transition text-sm font-medium flex items-center justify-center gap-1.5 shadow-sm flex-1 sm:flex-none"
+          >
+            <img
+              src="https://api.iconify.design/lucide:printer.svg?color=%23ffffff"
+              alt="Print"
+              class="w-4 h-4 object-contain"
+            />
+            <span id="t_btnPrint">ព្រីន / PDF</span>
+          </button>
+        </div>
+
+        <div
+          class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto"
         >
-        <div class="flex gap-2">
-          <button
-            id="prevPageBtn"
-            class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 disabled:opacity-40 transition"
+          <span
+            id="pageInfo"
+            class="text-xs sm:text-sm text-slate-500 font-medium"
+            >កំពុងបង្ហាញ...</span
           >
-            <span id="t_prev">មុន</span>
-          </button>
-          <button
-            id="nextPageBtn"
-            class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 disabled:opacity-40 transition"
-          >
-            <span id="t_next">បន្ទាប់</span>
-          </button>
+          <div class="flex gap-2">
+            <button
+              id="prevPageBtn"
+              class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 disabled:opacity-40 transition"
+            >
+              <span id="t_prev">មុន</span>
+            </button>
+            <button
+              id="nextPageBtn"
+              class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 disabled:opacity-40 transition"
+            >
+              <span id="t_next">បន្ទាប់</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -831,6 +794,13 @@
             <span id="modalAddress" class="font-semibold text-slate-900"></span>
           </div>
           <div class="flex justify-between">
+            <span id="m_dailyAbsence">អវត្តមានប្រចាំថ្ងៃ៖</span>
+            <span
+              id="modalDailyAbsence"
+              class="font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg"
+            ></span>
+          </div>
+          <div class="flex justify-between">
             <span id="m_absence">អវត្តមាន (១សប្តាហ៍)៖</span>
             <span
               id="modalAbsence"
@@ -884,6 +854,758 @@
       </div>
     </div>
 
-    <script type="module" src="app.js"></script>
+    <!-- Firebase & Logic Script -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref as dbRef,
+        set,
+        push,
+        update,
+        remove,
+        get,
+        child,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+      import {
+        getStorage,
+        ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+      import {
+        getAuth,
+        GoogleAuthProvider,
+        signInWithPopup,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyCcPdzU1Pacj6bT3MhwuKgZI3dGaBHQYMg",
+        authDomain: "fir-e5642.firebaseapp.com",
+        databaseURL:
+          "https://fir-e5642-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "fir-e5642",
+        storageBucket: "fir-e5642.firebasestorage.app",
+        messagingSenderId: "1049370185512",
+        appId: "1:1049370185512:web:cac59e770f126929c0ca1d",
+        measurementId: "G-0SX8QNHQK7",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+
+      const ADMIN_CREDENTIALS = {
+        username: "123",
+        password: "123",
+      };
+
+      const translations = {
+        kh: {
+          welcome: "ស្វាគមន៍មកកាន់",
+          subWelcome: "ប្រព័ន្ធគ្រប់គ្រងសិស្សកម្រិតខ្ពស់",
+          adminLoginTitle: "ចូលសម្រាប់រដ្ឋបាល (Admin)",
+          username: "ឈ្មោះអ្នកប្រើប្រាស់",
+          password: "ពាក្យសម្ងាត់",
+          adminLoginBtn: "ចូលជា Admin",
+          or: "ឬ",
+          googleLogin: "ចូលគណនីជាមួយ Google",
+          dashTitle: "ប្រព័ន្ធគ្រប់គ្រងសិស្ស",
+          logout: "ចាកចេញ",
+          cardTotal: "សិស្សសរុប",
+          cardMale: "សិស្សប្រុស",
+          cardFemale: "សិស្សស្រី",
+          cardDailyAbsence: "អវត្តមានប្រចាំថ្ងៃ",
+          cardClass: "ថ្នាក់រៀនសរុប",
+          formHeader: "បន្ថែមព័ត៌មានសិស្សថ្មី",
+          editFormHeader: "កែប្រែព័ត៌មានសិស្ស",
+          lblFullName: "ឈ្មោះពេញ",
+          lblGender: "ភេទ",
+          optMale: "ប្រុស",
+          optFemale: "ស្រី",
+          lblAge: "អាយុ",
+          lblClass: "ថ្នាក់រៀន",
+          lblDob: "ថ្ងៃខែឆ្នាំកំណើត",
+          lblPhone: "លេខទូរស័ព្ទអាណាព្យាបាល",
+          lblPhoto: "រូបថតសិស្ស (Storage)",
+          lblAddress: "អាសយដ្ឋាន",
+          lblScoreKm: "ពិន្ទុភាសាខ្មែរ",
+          lblScoreMath: "ពិន្ទុគណិតវិទ្យា",
+          lblScoreEng: "ពិន្ទុអង់គ្លេស",
+          lblDailyAbsenceInput: "អវត្តមានប្រចាំថ្ងៃ",
+          lblAbsenceInput: "អវត្តមាន (១សប្តាហ៍)",
+          cancelBtn: "បោះបង់",
+          saveBtn: "រក្សាទុកទិន្នន័យ",
+          updateBtn: "កែប្រែទិន្នន័យ",
+          searchPlaceholder: "ស្វែងរកតាមឈ្មោះ ឬថ្នាក់រៀន...",
+          btnExcel: "ទាញយក Excel",
+          btnPrint: "ព្រីន / PDF",
+          printTitle: "បញ្ជីឈ្មោះ និងលទ្ធផលសិក្សាសិស្សសរុប",
+          printSub: "ប្រព័ន្ធគ្រប់គ្រងសិស្ស",
+          topStudentsTitle: "សិស្សពូកែដែលមានពិន្ទុខ្ពស់ជាងគេ (Top Ranking)",
+          th_photo: "រូបថត",
+          th_name: "ឈ្មោះ",
+          th_gender: "ភេទ",
+          th_class: "ថ្នាក់",
+          th_gpa: "មធ្យភាគ (GPA)",
+          th_dailyAbsence: "អវ.ប្រចាំថ្ងៃ",
+          th_profile: "ប្រវត្តិរូប",
+          th_action: "សកម្មភាព",
+          editAction: "កែប្រែ",
+          deleteAction: "លុប",
+          viewProfileBtn: "មើលប្រវត្តិរូប",
+          prev: "មុន",
+          next: "បន្ទាប់",
+          m_gender: "ភេទ៖",
+          m_age: "អាយុ៖",
+          m_dob: "ថ្ងៃខែឆ្នាំកំណើត៖",
+          m_phone: "លេខទូរស័ព្ទ៖",
+          m_address: "អាសយដ្ឋាន៖",
+          m_dailyAbsence: "អវត្តមានប្រចាំថ្ងៃ៖",
+          m_absence: "អវត្តមាន (១សប្តាហ៍)៖",
+          m_scoreTitle: "លទ្ធផលពិន្ទុ និង GPA",
+          m_km: "ភាសាខ្មែរ",
+          m_math: "គណិតវិទ្យា",
+          m_eng: "អង់គ្លេស",
+          m_gpaText: "ពិន្ទុមធ្យភាគសរុប (GPA)",
+        },
+        en: {
+          welcome: "Welcome to",
+          subWelcome: "Advanced Student Management System",
+          adminLoginTitle: "Admin Login",
+          username: "Username",
+          password: "Password",
+          adminLoginBtn: "Login as Admin",
+          or: "OR",
+          googleLogin: "Sign in with Google",
+          dashTitle: "Student Management System",
+          logout: "Logout",
+          cardTotal: "Total Students",
+          cardMale: "Male Students",
+          cardFemale: "Female Students",
+          cardDailyAbsence: "Daily Absences",
+          cardClass: "Total Classes",
+          formHeader: "Add New Student",
+          editFormHeader: "Edit Student Info",
+          lblFullName: "Full Name",
+          lblGender: "Gender",
+          optMale: "Male",
+          optFemale: "Female",
+          lblAge: "Age",
+          lblClass: "Classroom",
+          lblDob: "Date of Birth",
+          lblPhone: "Guardian Phone",
+          lblPhoto: "Student Photo (Storage)",
+          lblAddress: "Address",
+          lblScoreKm: "Khmer Score",
+          lblScoreMath: "Math Score",
+          lblScoreEng: "English Score",
+          lblDailyAbsenceInput: "Daily Absences",
+          lblAbsenceInput: "Absences (1 Week)",
+          cancelBtn: "Cancel",
+          saveBtn: "Save Data",
+          updateBtn: "Update Data",
+          searchPlaceholder: "Search by name or class...",
+          btnExcel: "Export Excel",
+          btnPrint: "Print / PDF",
+          printTitle: "Comprehensive Student List & Results",
+          printSub: "Student Management System",
+          topStudentsTitle: "Top Ranking Students (Highest GPA)",
+          th_photo: "Photo",
+          th_name: "Name",
+          th_gender: "Gender",
+          th_class: "Class",
+          th_gpa: "GPA",
+          th_dailyAbsence: "Daily Abs.",
+          th_profile: "Profile",
+          th_action: "Actions",
+          editAction: "Edit",
+          deleteAction: "Delete",
+          viewProfileBtn: "View Profile",
+          prev: "Prev",
+          next: "Next",
+          m_gender: "Gender:",
+          m_age: "Age:",
+          m_dob: "Date of Birth:",
+          m_phone: "Phone:",
+          m_address: "Address:",
+          m_dailyAbsence: "Daily Absences:",
+          m_absence: "Absences (1 Wk):",
+          m_scoreTitle: "Scores & GPA",
+          m_km: "Khmer",
+          m_math: "Math",
+          m_eng: "English",
+          m_gpaText: "Total GPA",
+        },
+      };
+
+      let currentLang = "kh",
+        allStudents = [],
+        filteredStudents = [],
+        isAdmin = false,
+        isEditing = false,
+        currentPage = 1;
+      const rowsPerPage = 5;
+
+      function switchLanguage() {
+        currentLang = currentLang === "kh" ? "en" : "kh";
+        document.getElementById("currentLangLabel").textContent =
+          currentLang === "kh" ? "KH / EN" : "EN / KH";
+        applyTranslations();
+        renderStudentsTable();
+        renderTopStudents();
+      }
+
+      document
+        .getElementById("langToggleBtn")
+        .addEventListener("click", switchLanguage);
+      document
+        .getElementById("dashLangBtn")
+        .addEventListener("click", switchLanguage);
+
+      function applyTranslations() {
+        const t = translations[currentLang];
+        document.documentElement.lang = currentLang;
+        document.getElementById("t_welcome").textContent = t.welcome;
+        document.getElementById("t_subWelcome").textContent = t.subWelcome;
+        document.getElementById("t_adminLoginTitle").textContent =
+          t.adminLoginTitle;
+        document.getElementById("t_username").textContent = t.username;
+        document.getElementById("t_password").textContent = t.password;
+        document.getElementById("t_adminLoginBtn").textContent =
+          t.adminLoginBtn;
+        document.getElementById("t_or").textContent = t.or;
+        document.getElementById("t_googleLogin").textContent = t.googleLogin;
+        document.getElementById("t_dashTitle").textContent = t.dashTitle;
+        document.getElementById("logoutBtn").textContent = t.logout;
+        document.getElementById("t_cardTotal").textContent = t.cardTotal;
+        document.getElementById("t_cardMale").textContent = t.cardMale;
+        document.getElementById("t_cardFemale").textContent = t.cardFemale;
+        document.getElementById("t_cardDailyAbsence").textContent =
+          t.cardDailyAbsence;
+        document.getElementById("t_cardClass").textContent = t.cardClass;
+        document.getElementById("t_topStudentsTitle").innerHTML =
+          `<img src="https://api.iconify.design/lucide:award.svg?color=%23d97706" alt="Award" class="w-5 h-5 object-contain"> ${t.topStudentsTitle}`;
+
+        const submitBtn = document.getElementById("submitBtn");
+        if (!isEditing) {
+          document.getElementById("t_formHeader").textContent = t.formHeader;
+          submitBtn.textContent = t.saveBtn;
+        } else {
+          submitBtn.textContent = t.updateBtn;
+        }
+
+        document.getElementById("t_lblFullName").textContent = t.lblFullName;
+        document.getElementById("t_lblGender").textContent = t.lblGender;
+        document.getElementById("t_optMale").textContent = t.optMale;
+        document.getElementById("t_optFemale").textContent = t.optFemale;
+        document.getElementById("t_lblAge").textContent = t.lblAge;
+        document.getElementById("t_lblClass").textContent = t.lblClass;
+        document.getElementById("t_lblDob").textContent = t.lblDob;
+        document.getElementById("t_lblPhone").textContent = t.lblPhone;
+        document.getElementById("t_lblPhoto").textContent = t.lblPhoto;
+        document.getElementById("t_lblAddress").textContent = t.lblAddress;
+        document.getElementById("t_lblScoreKm").textContent = t.lblScoreKm;
+        document.getElementById("t_lblScoreMath").textContent = t.lblScoreMath;
+        document.getElementById("t_lblScoreEng").textContent = t.lblScoreEng;
+        document.getElementById("t_lblDailyAbsenceInput").textContent =
+          t.lblDailyAbsenceInput;
+        document.getElementById("t_lblAbsenceInput").textContent =
+          t.lblAbsenceInput;
+        document.getElementById("cancelEditBtn").textContent = t.cancelBtn;
+
+        document.getElementById("searchInput").placeholder =
+          t.searchPlaceholder;
+        document.getElementById("t_btnExcel").textContent = t.btnExcel;
+        document.getElementById("t_btnPrint").textContent = t.btnPrint;
+        document.getElementById("t_printTitle").textContent = t.printTitle;
+        document.getElementById("t_printSub").textContent = t.printSub;
+        document.getElementById("th_photo").textContent = t.th_photo;
+        document.getElementById("th_name").textContent = t.th_name;
+        document.getElementById("th_gender").textContent = t.th_gender;
+        document.getElementById("th_class").textContent = t.th_class;
+        document.getElementById("th_gpa").textContent = t.th_gpa;
+        document.getElementById("th_dailyAbsence").textContent =
+          t.th_dailyAbsence;
+        document.getElementById("th_profile").textContent = t.th_profile;
+        document.getElementById("actionHeader").textContent = t.th_action;
+        document.getElementById("t_prev").textContent = t.prev;
+        document.getElementById("t_next").textContent = t.next;
+
+        document.getElementById("m_gender").textContent = t.m_gender;
+        document.getElementById("m_age").textContent = t.m_age;
+        document.getElementById("m_dob").textContent = t.m_dob;
+        document.getElementById("m_phone").textContent = t.m_phone;
+        document.getElementById("m_address").textContent = t.m_address;
+        document.getElementById("m_dailyAbsence").textContent =
+          t.m_dailyAbsence;
+        document.getElementById("m_absence").textContent = t.m_absence;
+        document.getElementById("m_scoreTitle").textContent = t.m_scoreTitle;
+        document.getElementById("m_km").textContent = t.m_km;
+        document.getElementById("m_math").textContent = t.m_math;
+        document.getElementById("m_eng").textContent = t.m_eng;
+        document.getElementById("m_gpaText").textContent = t.m_gpaText;
+      }
+
+      function showToast(message, type = "success") {
+        const toast = document.createElement("div");
+        const iconImg =
+          type === "success"
+            ? `<img src="https://api.iconify.design/lucide:check.svg?color=%23ffffff" class="w-4 h-4 object-contain shrink-0">`
+            : `<img src="https://api.iconify.design/lucide:alert-triangle.svg?color=%23ffffff" class="w-4 h-4 object-contain shrink-0">`;
+
+        toast.className = `${type === "success" ? "bg-emerald-600" : "bg-rose-600"} text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2`;
+        toast.innerHTML = `${iconImg} <span>${message}</span>`;
+        document.getElementById("toastContainer").appendChild(toast);
+        setTimeout(
+          () => toast.classList.remove("translate-y-2", "opacity-0"),
+          100,
+        );
+        setTimeout(() => {
+          toast.classList.add("translate-y-2", "opacity-0");
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      document
+        .getElementById("adminLoginForm")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (
+            document.getElementById("adminUser").value.trim() ===
+              ADMIN_CREDENTIALS.username &&
+            document.getElementById("adminPass").value.trim() ===
+              ADMIN_CREDENTIALS.password
+          ) {
+            sessionStorage.setItem("role", "admin");
+            sessionStorage.setItem("identifier", "Admin System");
+            showDashboard(true, "Admin System");
+            showToast(
+              currentLang === "kh"
+                ? "ចូលជា Admin បានជោគជ័យ!"
+                : "Admin login successful!",
+            );
+          } else {
+            showToast(
+              currentLang === "kh"
+                ? "ឈ្មោះអ្នកប្រើប្រាស់ ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ!"
+                : "Invalid credentials!",
+              "error",
+            );
+          }
+        });
+
+      document
+        .getElementById("userLoginBtn")
+        .addEventListener("click", async () => {
+          try {
+            const res = await signInWithPopup(auth, provider);
+            sessionStorage.setItem("role", "user");
+            sessionStorage.setItem("identifier", res.user.email);
+            showDashboard(false, res.user.email);
+            showToast(
+              currentLang === "kh"
+                ? "ចូលគណនីជាមួយ Google បានជោគជ័យ!"
+                : "Google login successful!",
+            );
+          } catch (err) {
+            showToast("Google Login Error!", "error");
+          }
+        });
+
+      function showDashboard(adminStatus, identifier) {
+        isAdmin = adminStatus;
+        document.getElementById("loginPage").classList.add("hidden");
+        document
+          .getElementById("langToggleBtn")
+          .parentElement.classList.add("hidden");
+        document.getElementById("dashboardPage").classList.remove("hidden");
+        document.getElementById("userEmail").textContent = identifier;
+
+        if (isAdmin) {
+          document.getElementById("roleBadge").textContent = "ADMIN";
+          document.getElementById("roleBadge").className =
+            "text-xs px-2.5 py-1 rounded-lg font-bold bg-rose-50 text-rose-600 border border-rose-100";
+          document
+            .getElementById("adminFormContainer")
+            .classList.remove("hidden");
+          document.getElementById("actionHeader").classList.remove("hidden");
+        } else {
+          document.getElementById("roleBadge").textContent =
+            currentLang === "kh" ? "USER (ទស្សនា)" : "USER (Viewer)";
+          document.getElementById("roleBadge").className =
+            "text-xs px-2.5 py-1 rounded-lg font-bold bg-emerald-50 text-emerald-600 border border-emerald-100";
+          document.getElementById("adminFormContainer").classList.add("hidden");
+          document.getElementById("actionHeader").classList.add("hidden");
+        }
+        loadData();
+      }
+
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", async () => {
+          sessionStorage.clear();
+          try {
+            await signOut(auth);
+          } catch (e) {}
+          document.getElementById("dashboardPage").classList.add("hidden");
+          document.getElementById("loginPage").classList.remove("hidden");
+          document
+            .getElementById("langToggleBtn")
+            .parentElement.classList.add("hidden");
+          document.getElementById("adminLoginForm").reset();
+          showToast("Logged out!");
+        });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        applyTranslations();
+        if (sessionStorage.getItem("role"))
+          showDashboard(
+            sessionStorage.getItem("role") === "admin",
+            sessionStorage.getItem("identifier"),
+          );
+      });
+
+      async function loadData() {
+        document.getElementById("studentTableBody").innerHTML =
+          `<tr><td colspan="8" class="text-center py-6 text-slate-400">Loading...</td></tr>`;
+        try {
+          const snap = await get(child(dbRef(database), "students"));
+          allStudents = [];
+          if (snap.exists()) {
+            const data = snap.val();
+            Object.keys(data).forEach((k) =>
+              allStudents.push({ id: k, ...data[k] }),
+            );
+          }
+          filteredStudents = [...allStudents];
+          updateStats();
+          renderTopStudents();
+          currentPage = 1;
+          renderStudentsTable();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function updateStats() {
+        document.getElementById("totalStudents").textContent =
+          allStudents.length;
+        document.getElementById("totalMale").textContent = allStudents.filter(
+          (s) => s.gender === "ប្រុស" || s.gender === "Male",
+        ).length;
+        document.getElementById("totalFemale").textContent = allStudents.filter(
+          (s) => s.gender === "ស្រី" || s.gender === "Female",
+        ).length;
+        document.getElementById("totalDailyAbsences").textContent =
+          allStudents.reduce(
+            (sum, s) => sum + Number(s.dailyAbsenceDays || 0),
+            0,
+          );
+        document.getElementById("totalClasses").textContent = new Set(
+          allStudents.map((s) => s.classRoom),
+        ).size;
+      }
+
+      function renderTopStudents() {
+        const container = document.getElementById("topStudentsContainer");
+        container.innerHTML = "";
+        if (allStudents.length === 0) {
+          container.innerHTML = `<div class="col-span-5 text-center text-xs text-amber-700/60 py-2">${currentLang === "kh" ? "មិនទាន់មានទិន្នន័យ" : "No data available"}</div>`;
+          return;
+        }
+
+        const sorted = [...allStudents]
+          .map((s) => {
+            const km = Number(s.scoreKm || 0),
+              math = Number(s.scoreMath || 0),
+              eng = Number(s.scoreEng || 0);
+            return { ...s, gpa: (km + math + eng) / 3 };
+          })
+          .sort((a, b) => b.gpa - a.gpa)
+          .slice(0, 5);
+
+        sorted.forEach((s, idx) => {
+          const badgeColor =
+            idx === 0
+              ? "bg-amber-500 text-white shadow-amber-200"
+              : idx === 1
+                ? "bg-slate-400 text-white"
+                : idx === 2
+                  ? "bg-amber-700 text-white"
+                  : "bg-white text-slate-700 border border-amber-200";
+          container.innerHTML += `
+                    <div onclick="window.viewProfile('${s.id}')" class="bg-white/80 hover:bg-white p-3 rounded-xl border border-amber-200/60 shadow-sm flex items-center gap-3 cursor-pointer transition transform hover:-translate-y-0.5">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shrink-0 shadow-sm ${badgeColor}">
+                            #${idx + 1}
+                        </div>
+                        <img src="${s.photo || "https://via.placeholder.com/150"}" class="w-9 h-9 rounded-full object-cover border border-amber-100 shrink-0">
+                        <div class="overflow-hidden">
+                            <h4 class="text-xs font-bold text-slate-900 truncate">${s.name}</h4>
+                            <p class="text-[10px] text-amber-700 font-semibold">GPA: ${s.gpa.toFixed(2)}</p>
+                        </div>
+                    </div>`;
+        });
+      }
+
+      function renderStudentsTable() {
+        const body = document.getElementById("studentTableBody");
+        body.innerHTML = "";
+        const t = translations[currentLang];
+        if (filteredStudents.length === 0) {
+          body.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400 font-medium">No records found</td></tr>`;
+          document.getElementById("pageInfo").textContent = "Page 0 of 0";
+          return;
+        }
+        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        filteredStudents
+          .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+          .forEach((s) => {
+            const gpa = (
+              (Number(s.scoreKm || 0) +
+                Number(s.scoreMath || 0) +
+                Number(s.scoreEng || 0)) /
+              3
+            ).toFixed(2);
+            body.innerHTML += `
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="px-4 py-3 whitespace-nowrap"><img src="${s.photo || "https://via.placeholder.com/150"}" class="w-10 h-10 rounded-full object-cover border"></td>
+                        <td class="px-4 py-3 font-semibold text-slate-900">${s.name}</td>
+                        <td class="px-4 py-3 text-slate-600">${s.gender}</td>
+                        <td class="px-4 py-3 text-slate-600"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs">${s.classRoom}</span></td>
+                        <td class="px-4 py-3 font-bold text-indigo-600">${gpa}</td>
+                        <td class="px-4 py-3 font-bold text-amber-600">${s.dailyAbsenceDays || 0}</td>
+                        <td class="px-4 py-3 text-center"><button onclick="window.viewProfile('${s.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold">${t.viewProfileBtn}</button></td>
+                        ${isAdmin ? `<td class="px-4 py-3 text-center space-x-1"><button onclick="window.editStudent('${s.id}')" class="text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg text-xs font-semibold">${t.editAction}</button><button onclick="window.deleteStudent('${s.id}')" class="text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg text-xs font-semibold">${t.deleteAction}</button></td>` : ""}
+                    </tr>`;
+          });
+        document.getElementById("pageInfo").textContent =
+          `Page ${currentPage} of ${totalPages || 1}`;
+        document.getElementById("prevPageBtn").disabled = currentPage === 1;
+        document.getElementById("nextPageBtn").disabled =
+          currentPage === totalPages || totalPages === 0;
+      }
+
+      document.getElementById("prevPageBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderStudentsTable();
+        }
+      });
+      document.getElementById("nextPageBtn").addEventListener("click", () => {
+        if (currentPage < Math.ceil(filteredStudents.length / rowsPerPage)) {
+          currentPage++;
+          renderStudentsTable();
+        }
+      });
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        const kw = e.target.value.toLowerCase();
+        filteredStudents = allStudents.filter(
+          (s) =>
+            s.name.toLowerCase().includes(kw) ||
+            s.classRoom.toLowerCase().includes(kw),
+        );
+        currentPage = 1;
+        renderStudentsTable();
+      });
+
+      document
+        .getElementById("studentForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!isAdmin) return;
+          const id = document.getElementById("studentId").value;
+          const fileInput = document.getElementById("photoFile");
+          let photoUrl = isEditing
+            ? allStudents.find((s) => s.id === id)?.photo || ""
+            : "";
+
+          if (fileInput.files.length > 0) {
+            try {
+              const snap = await uploadBytes(
+                storageRef(
+                  storage,
+                  "student_photos/" +
+                    Date.now() +
+                    "_" +
+                    fileInput.files[0].name,
+                ),
+                fileInput.files[0],
+              );
+              photoUrl = await getDownloadURL(snap.ref);
+            } catch (err) {
+              showToast("Upload photo error", "error");
+              return;
+            }
+          }
+
+          const data = {
+            name: document.getElementById("name").value,
+            gender: document.getElementById("gender").value,
+            age: Number(document.getElementById("age").value),
+            classRoom: document.getElementById("classRoom").value,
+            dob: document.getElementById("dob").value,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value,
+            scoreKm: Number(document.getElementById("scoreKm").value),
+            scoreMath: Number(document.getElementById("scoreMath").value),
+            scoreEng: Number(document.getElementById("scoreEng").value),
+            dailyAbsenceDays: Number(
+              document.getElementById("dailyAbsenceDays").value,
+            ),
+            absenceDays: Number(
+              document.getElementById("absenceDays").value || 0,
+            ),
+            photo: photoUrl,
+            updatedAt: new Date().toISOString(),
+          };
+
+          try {
+            if (isEditing && id) {
+              await update(dbRef(database, "students/" + id), data);
+              showToast("Updated successfully!");
+              resetForm();
+            } else {
+              data.createdAt = new Date().toISOString();
+              await set(push(dbRef(database, "students")), data);
+              showToast("Added successfully!");
+              document.getElementById("studentForm").reset();
+            }
+            loadData();
+          } catch (err) {
+            showToast("Save error", "error");
+          }
+        });
+
+      window.editStudent = function (id) {
+        const s = allStudents.find((item) => item.id === id);
+        if (!s) return;
+        document.getElementById("studentId").value = s.id;
+        document.getElementById("name").value = s.name;
+        document.getElementById("gender").value = s.gender;
+        document.getElementById("age").value = s.age;
+        document.getElementById("classRoom").value = s.classRoom;
+        document.getElementById("dob").value = s.dob || "";
+        document.getElementById("phone").value = s.phone || "";
+        document.getElementById("address").value = s.address || "";
+        document.getElementById("scoreKm").value = s.scoreKm || 0;
+        document.getElementById("scoreMath").value = s.scoreMath || 0;
+        document.getElementById("scoreEng").value = s.scoreEng || 0;
+        document.getElementById("dailyAbsenceDays").value =
+          s.dailyAbsenceDays || 0;
+        document.getElementById("absenceDays").value = s.absenceDays || 0;
+        document.getElementById("t_formHeader").textContent =
+          currentLang === "kh" ? "កែប្រែព័ត៌មានសិស្ស" : "Edit Student";
+        document.getElementById("submitBtn").textContent =
+          translations[currentLang].updateBtn;
+        document.getElementById("cancelEditBtn").classList.remove("hidden");
+        isEditing = true;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      document
+        .getElementById("cancelEditBtn")
+        .addEventListener("click", resetForm);
+      function resetForm() {
+        document.getElementById("studentForm").reset();
+        document.getElementById("studentId").value = "";
+        document.getElementById("t_formHeader").textContent =
+          translations[currentLang].formHeader;
+        document.getElementById("submitBtn").textContent =
+          translations[currentLang].saveBtn;
+        document.getElementById("cancelEditBtn").classList.add("hidden");
+        isEditing = false;
+      }
+
+      window.deleteStudent = async function (id) {
+        if (!isAdmin) return;
+        if (confirm("Delete this student?")) {
+          await remove(dbRef(database, "students/" + id));
+          showToast("Deleted successfully!", "error");
+          loadData();
+        }
+      };
+
+      window.viewProfile = function (id) {
+        const s = allStudents.find((item) => item.id === id);
+        if (!s) return;
+        document.getElementById("modalPhoto").src =
+          s.photo || "https://via.placeholder.com/150";
+        document.getElementById("modalName").textContent = s.name;
+        document.getElementById("modalClass").textContent =
+          (currentLang === "kh" ? "ថ្នាក់: " : "Class: ") + s.classRoom;
+        document.getElementById("modalGender").textContent = s.gender;
+        document.getElementById("modalAge").textContent =
+          s.age + (currentLang === "kh" ? " ឆ្នាំ" : " yrs");
+        document.getElementById("modalDob").textContent = s.dob || "-";
+        document.getElementById("modalPhone").textContent = s.phone || "-";
+        document.getElementById("modalAddress").textContent = s.address || "-";
+        document.getElementById("modalDailyAbsence").textContent =
+          (s.dailyAbsenceDays || 0) + (currentLang === "kh" ? " ដង" : " times");
+        document.getElementById("modalAbsence").textContent =
+          (s.absenceDays || 0) + (currentLang === "kh" ? " ដង" : " times");
+        document.getElementById("modalScoreKm").textContent = s.scoreKm || 0;
+        document.getElementById("modalScoreMath").textContent =
+          s.scoreMath || 0;
+        document.getElementById("modalScoreEng").textContent = s.scoreEng || 0;
+        document.getElementById("modalGpa").textContent = (
+          (Number(s.scoreKm || 0) +
+            Number(s.scoreMath || 0) +
+            Number(s.scoreEng || 0)) /
+          3
+        ).toFixed(2);
+        document.getElementById("profileModal").classList.remove("hidden");
+      };
+
+      document
+        .getElementById("closeModalBtn")
+        .addEventListener("click", () =>
+          document.getElementById("profileModal").classList.add("hidden"),
+        );
+      window.addEventListener("click", (e) => {
+        if (e.target === document.getElementById("profileModal"))
+          document.getElementById("profileModal").classList.add("hidden");
+      });
+
+      document
+        .getElementById("exportExcelBtn")
+        .addEventListener("click", () => {
+          if (allStudents.length === 0) {
+            showToast("No data", "error");
+            return;
+          }
+          let csv =
+            "\uFEFFNo,Name,Gender,Age,Class,Khmer,Math,English,GPA,DailyAbsences,WeeklyAbsences,Phone,Address\n";
+          allStudents.forEach((s, i) => {
+            const gpa = (
+              (Number(s.scoreKm || 0) +
+                Number(s.scoreMath || 0) +
+                Number(s.scoreEng || 0)) /
+              3
+            ).toFixed(2);
+            csv += `${i + 1},"${s.name}","${s.gender}",${s.age},"${s.classRoom}",${s.scoreKm || 0},${s.scoreMath || 0},${s.scoreEng || 0},${gpa},${s.dailyAbsenceDays || 0},${s.absenceDays || 0},"${s.phone || ""}","${s.address || ""}"\n`;
+          });
+          const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "Student_Report.csv";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          showToast("Excel downloaded!");
+        });
+
+      document
+        .getElementById("printBtn")
+        .addEventListener("click", () => window.print());
+    </script>
   </body>
 </html>
