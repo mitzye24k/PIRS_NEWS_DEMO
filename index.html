@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="km">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ប្រព័ន្ធគ្រប់គ្រងសិស្ស - Realtime Database & Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Kantumruy Pro", sans-serif;
+      }
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #printableArea,
+        #printableArea * {
+          visibility: visible;
+        }
+        #printableArea {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen p-4 flex items-center justify-center">
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed top-5 right-5 z-50 space-y-2"></div>
+
+    <!-- ទី១៖ ផ្ទាំង Login Page -->
+    <div
+      id="loginPage"
+      class="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg"
+    >
+      <div class="mb-6 text-center">
+        <h1 class="text-3xl font-bold text-blue-600 mb-2">ស្វាគមន៍មកកាន់</h1>
+        <p class="text-gray-600">ប្រព័ន្ធគ្រប់គ្រងសិស្ស</p>
+      </div>
+
+      <!-- Admin Login -->
+      <div class="mb-6 bg-blue-50 p-4 rounded-xl border border-blue-200">
+        <h2 class="text-sm font-bold text-blue-700 mb-3 uppercase">
+          ចូលសម្រាប់ Admin
+        </h2>
+        <form id="adminLoginForm" class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >ឈ្មោះអ្នកប្រើប្រាស់ (Username)</label
+            >
+            <input
+              type="text"
+              id="adminUser"
+              required
+              class="w-full p-2 text-sm border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >ពាក្យសម្ងាត់ (Password)</label
+            >
+            <input
+              type="password"
+              id="adminPass"
+              required
+              class="w-full p-2 text-sm border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm font-medium"
+          >
+            ចូលជា Admin
+          </button>
+        </form>
+      </div>
+
+      <div class="relative flex py-2 items-center">
+        <div class="flex-grow border-t border-gray-300"></div>
+        <span class="flex-shrink mx-4 text-gray-400 text-xs">ឬ</span>
+        <div class="flex-grow border-t border-gray-300"></div>
+      </div>
+
+      <!-- User Login ជាមួយ Google -->
+      <div class="mt-4 text-center">
+        <h2 class="text-sm font-bold text-gray-700 mb-3 uppercase">
+          ចូលសម្រាប់អ្នកទស្សនាទូទៅ
+        </h2>
+        <button
+          id="userLoginBtn"
+          class="w-full bg-red-500 text-white py-3 px-4 rounded-xl hover:bg-red-600 transition flex items-center justify-center gap-3 font-medium shadow-md text-sm"
+        >
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+            <path
+              d="M12.24 10.28V14h5.45c-.24 1.25-1.4 3.65-5.45 3.65-3.28 0-5.96-2.72-5.96-6s2.68-6 5.96-6c1.87 0 3.12.79 3.84 1.47l2.89-2.79C17.2 3.82 14.94 3 12.24 3 7.02 3 2.78 7.24 2.78 12.46s4.24 9.46 9.46 9.46c5.46 0 9.08-3.84 9.08-9.24 0-.64-.07-1.12-.18-1.62H12.24z"
+            />
+          </svg>
+          ចូលគណនីជាមួយ Google (User ធម្មតា)
+        </button>
+      </div>
+    </div>
+
+    <!-- ទី២៖ ផ្ទាំងការងារ (Dashboard) -->
+    <div
+      id="dashboardPage"
+      class="hidden max-w-7xl w-full mx-auto bg-white p-6 rounded-xl shadow-md min-h-[90vh] flex flex-col"
+    >
+      <!-- Header & User Info -->
+      <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <div>
+          <h1 class="text-2xl font-bold text-blue-600">
+            ផ្ទាំងការងារគ្រប់គ្រងសិស្ស
+          </h1>
+          <div class="flex items-center gap-2 mt-1">
+            <span
+              id="userEmail"
+              class="text-sm text-gray-600 font-medium"
+            ></span>
+            <span
+              id="roleBadge"
+              class="text-xs px-2 py-1 rounded font-bold"
+            ></span>
+          </div>
+        </div>
+        <button
+          id="logoutBtn"
+          class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition"
+        >
+          ចាកចេញ (Logout)
+        </button>
+      </div>
+
+      <!-- Dashboard Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div
+          class="bg-blue-50 border border-blue-200 p-4 rounded-xl flex items-center justify-between"
+        >
+          <div>
+            <p class="text-xs text-blue-600 font-bold uppercase">សិស្សសរុប</p>
+            <h3 id="totalStudents" class="text-2xl font-bold text-blue-800">
+              0
+            </h3>
+          </div>
+          <span class="text-3xl">👥</span>
+        </div>
+        <div
+          class="bg-green-50 border border-green-200 p-4 rounded-xl flex items-center justify-between"
+        >
+          <div>
+            <p class="text-xs text-green-600 font-bold uppercase">សិស្សប្រុស</p>
+            <h3 id="totalMale" class="text-2xl font-bold text-green-800">0</h3>
+          </div>
+          <span class="text-3xl">👦</span>
+        </div>
+        <div
+          class="bg-pink-50 border border-pink-200 p-4 rounded-xl flex items-center justify-between"
+        >
+          <div>
+            <p class="text-xs text-pink-600 font-bold uppercase">សិស្សស្រី</p>
+            <h3 id="totalFemale" class="text-2xl font-bold text-pink-800">0</h3>
+          </div>
+          <span class="text-3xl">👧</span>
+        </div>
+        <div
+          class="bg-purple-50 border border-purple-200 p-4 rounded-xl flex items-center justify-between"
+        >
+          <div>
+            <p class="text-xs text-purple-600 font-bold uppercase">
+              ថ្នាក់រៀនសរុប
+            </p>
+            <h3 id="totalClasses" class="text-2xl font-bold text-purple-800">
+              0
+            </h3>
+          </div>
+          <span class="text-3xl">🏫</span>
+        </div>
+      </div>
+
+      <!-- ទម្រង់បន្ថែម/កែប្រែទិន្នន័យសិស្ស (សម្រាប់តែ Admin ប៉ុណ្ណោះ) -->
+      <div
+        id="adminFormContainer"
+        class="hidden mb-6 bg-blue-50 p-4 rounded-xl border border-blue-200 no-print"
+      >
+        <h2 id="formTitle" class="text-lg font-semibold text-blue-700 mb-3">
+          បន្ថែមព័ត៌មានសិស្សថ្មី (Admin)
+        </h2>
+        <form
+          id="studentForm"
+          class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
+          <input type="hidden" id="studentId" />
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >ឈ្មោះពេញ</label
+            >
+            <input
+              type="text"
+              id="name"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >ភេទ</label
+            >
+            <select
+              id="gender"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            >
+              <option value="ប្រុស">ប្រុស</option>
+              <option value="ស្រី">ស្រី</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >អាយុ</label
+            >
+            <input
+              type="number"
+              id="age"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >ថ្នាក់រៀន</label
+            >
+            <input
+              type="text"
+              id="classRoom"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >ថ្ងៃខែឆ្នាំកំណើត</label
+            >
+            <input
+              type="date"
+              id="dob"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >លេខទូរស័ព្ទអាណាព្យាបាល</label
+            >
+            <input
+              type="text"
+              id="phone"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >រូបថតសិស្ស (Storage)</label
+            >
+            <input
+              type="file"
+              id="photoFile"
+              accept="image/*"
+              class="w-full p-1 text-xs border rounded-md bg-white"
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium text-gray-700 mb-1"
+              >អាសយដ្ឋានបច្ចុប្បន្ន</label
+            >
+            <input
+              type="text"
+              id="address"
+              required
+              class="w-full p-2 text-sm border rounded-md bg-white"
+            />
+          </div>
+
+          <!-- ផ្នែកបញ្ចូលពិន្ទុ និងវត្តមាន -->
+          <div
+            class="md:col-span-3 lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-2 pt-2 border-t border-blue-200"
+          >
+            <div>
+              <label class="block text-xs font-medium text-gray-700"
+                >ពិន្ទុភាសាខ្មែរ</label
+              >
+              <input
+                type="number"
+                id="scoreKm"
+                min="0"
+                max="100"
+                value="0"
+                class="w-full p-1.5 text-sm border rounded-md bg-white"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-700"
+                >ពិន្ទុគណិតវិទ្យា</label
+              >
+              <input
+                type="number"
+                id="scoreMath"
+                min="0"
+                max="100"
+                value="0"
+                class="w-full p-1.5 text-sm border rounded-md bg-white"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-700"
+                >ពិន្ទុអង់គ្លេស</label
+              >
+              <input
+                type="number"
+                id="scoreEng"
+                min="0"
+                max="100"
+                value="0"
+                class="w-full p-1.5 text-sm border rounded-md bg-white"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-700"
+                >ស្ថានភាពវត្តមាន</label
+              >
+              <select
+                id="attendanceStatus"
+                class="w-full p-1.5 text-sm border rounded-md bg-white"
+              >
+                <option value="មក">មកទៀងទាត់</option>
+                <option value="យឺត">យឺតយ៉ាវ</option>
+                <option value="អវត្តមាន">អវត្តមាន</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="md:col-span-3 lg:col-span-4 flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              id="cancelEditBtn"
+              class="hidden bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition text-sm"
+            >
+              បោះបង់
+            </button>
+            <button
+              type="submit"
+              id="submitBtn"
+              class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition text-sm font-medium"
+            >
+              រក្សាទុកទិន្នន័យសិស្ស
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ប្រអប់ស្វែងរក និង ប៊ូតុងបញ្ជា -->
+      <div
+        class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4 no-print"
+      >
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="ស្វែងរកតាមឈ្មោះ ឬ ថ្នាក់រៀន..."
+          class="w-full md:w-1/2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
+        />
+        <div class="flex gap-2 w-full md:w-auto justify-end">
+          <button
+            id="exportExcelBtn"
+            class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition text-sm flex items-center gap-1"
+          >
+            📥 Excel
+          </button>
+          <button
+            id="printBtn"
+            class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition text-sm flex items-center gap-1"
+          >
+            🖨️ ព្រីន / PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- តារាងបង្ហាញទិន្នន័យ -->
+      <div id="printableArea" class="flex-grow flex flex-col">
+        <div class="hidden print:block text-center mb-4">
+          <h2 class="text-xl font-bold">បញ្ជីឈ្មោះ និងលទ្ធផលសិក្សាសិស្សសរុប</h2>
+          <p class="text-xs text-gray-500">ប្រព័ន្ធគ្រប់គ្រងសិស្ស</p>
+        </div>
+
+        <div class="overflow-y-auto flex-grow border rounded-lg">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50 sticky top-0">
+              <tr>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  រូបថត
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  ឈ្មោះ
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  ភេទ
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  ថ្នាក់
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  មធ្យភាគ (GPA)
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  វត្តមាន
+                </th>
+                <th
+                  class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase"
+                >
+                  ប្រវត្តិរូប
+                </th>
+                <th
+                  id="actionHeader"
+                  class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase hidden no-print"
+                >
+                  សកម្មភាព
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              id="studentTableBody"
+              class="bg-white divide-y divide-gray-200"
+            >
+              <!-- ទិន្នន័យបង្ហាញទីនេះ -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="flex justify-between items-center mt-4 no-print">
+        <span id="pageInfo" class="text-sm text-gray-600">កំពុងបង្ហាញ...</span>
+        <div class="flex gap-2">
+          <button
+            id="prevPageBtn"
+            class="bg-gray-200 px-3 py-1 rounded text-sm hover:bg-gray-300 disabled:opacity-50"
+          >
+            មុន
+          </button>
+          <button
+            id="nextPageBtn"
+            class="bg-gray-200 px-3 py-1 rounded text-sm hover:bg-gray-300 disabled:opacity-50"
+          >
+            បន្ទាប់
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Profile Modal -->
+    <div
+      id="profileModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4"
+    >
+      <div class="bg-white max-w-lg w-full rounded-2xl shadow-2xl p-6 relative">
+        <button
+          id="closeModalBtn"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold"
+        >
+          &times;
+        </button>
+        <div class="flex flex-col items-center text-center mb-6">
+          <img
+            id="modalPhoto"
+            src="https://via.placeholder.com/150"
+            alt="Photo"
+            class="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-md mb-3"
+          />
+          <h3 id="modalName" class="text-xl font-bold text-gray-800"></h3>
+          <p id="modalClass" class="text-sm text-blue-600 font-medium"></p>
+        </div>
+        <div class="space-y-3 text-sm border-t border-b py-4 mb-4">
+          <div class="flex justify-between">
+            <span class="text-gray-500">ភេទ៖</span>
+            <span id="modalGender" class="font-medium"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">អាយុ៖</span>
+            <span id="modalAge" class="font-medium"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">ថ្ងៃខែឆ្នាំកំណើត៖</span>
+            <span id="modalDob" class="font-medium"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">លេខទូរស័ព្ទអាណាព្យាបាល៖</span>
+            <span id="modalPhone" class="font-medium"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">អាសយដ្ឋាន៖</span>
+            <span id="modalAddress" class="font-medium"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">ស្ថានភាពវត្តមាន៖</span>
+            <span
+              id="modalAttendance"
+              class="font-bold px-2 py-0.5 rounded text-xs"
+            ></span>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-sm font-bold text-gray-700 mb-2">
+            លទ្ធផលពិន្ទុ និង GPA
+          </h4>
+          <div
+            class="grid grid-cols-3 gap-2 text-center text-xs bg-gray-50 p-3 rounded-xl border"
+          >
+            <div>
+              ភាសាខ្មែរ:
+              <span id="modalScoreKm" class="font-bold block text-sm">0</span>
+            </div>
+            <div>
+              គណិតវិទ្យា:
+              <span id="modalScoreMath" class="font-bold block text-sm">0</span>
+            </div>
+            <div>
+              អង់គ្លេស:
+              <span id="modalScoreEng" class="font-bold block text-sm">0</span>
+            </div>
+          </div>
+          <div
+            class="mt-3 text-center bg-blue-50 p-2 rounded-xl text-blue-700 font-bold text-sm"
+          >
+            ពិន្ទុមធ្យភាគសរុប (GPA): <span id="modalGpa">0.00</span> / 100
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK & Script -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import {
+        getDatabase,
+        ref as dbRef,
+        set,
+        push,
+        update,
+        remove,
+        get,
+        child,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+      import {
+        getStorage,
+        ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+      import {
+        getAuth,
+        GoogleAuthProvider,
+        signInWithPopup,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBgqJbjuy0O6SNSE1904NVaxoCyhNW8Dq0",
+        authDomain: "memeprompt-loginaccount.firebaseapp.com",
+        databaseURL:
+          "https://memeprompt-loginaccount-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "memeprompt-loginaccount",
+        storageBucket: "memeprompt-loginaccount.firebasestorage.app",
+        messagingSenderId: "866437301238",
+        appId: "1:866437301238:web:55da70143b3a9db4b13dd7",
+        measurementId: "G-LEECPXS93S",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+
+      const ADMIN_CREDENTIALS = {
+        username: "admin123",
+        password: "password123",
+      };
+
+      let allStudents = [];
+      let filteredStudents = [];
+      let isAdmin = false;
+      let isEditing = false;
+      let currentPage = 1;
+      const rowsPerPage = 5;
+
+      // Elements
+      const loginPage = document.getElementById("loginPage");
+      const dashboardPage = document.getElementById("dashboardPage");
+      const adminLoginForm = document.getElementById("adminLoginForm");
+      const adminUserInp = document.getElementById("adminUser");
+      const adminPassInp = document.getElementById("adminPass");
+      const userLoginBtn = document.getElementById("userLoginBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const userEmailSpan = document.getElementById("userEmail");
+      const roleBadge = document.getElementById("roleBadge");
+      const adminFormContainer = document.getElementById("adminFormContainer");
+      const studentForm = document.getElementById("studentForm");
+      const studentTableBody = document.getElementById("studentTableBody");
+      const actionHeader = document.getElementById("actionHeader");
+      const searchInput = document.getElementById("searchInput");
+      const formTitle = document.getElementById("formTitle");
+      const submitBtn = document.getElementById("submitBtn");
+      const cancelEditBtn = document.getElementById("cancelEditBtn");
+      const studentIdInp = document.getElementById("studentId");
+      const exportExcelBtn = document.getElementById("exportExcelBtn");
+      const printBtn = document.getElementById("printBtn");
+      const toastContainer = document.getElementById("toastContainer");
+      const prevPageBtn = document.getElementById("prevPageBtn");
+      const nextPageBtn = document.getElementById("nextPageBtn");
+      const pageInfo = document.getElementById("pageInfo");
+      const profileModal = document.getElementById("profileModal");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+
+      function showToast(message, type = "success") {
+        const toast = document.createElement("div");
+        const bgColor = type === "success" ? "bg-green-600" : "bg-red-600";
+        toast.className = `${bgColor} text-white px-4 py-2 rounded-lg shadow-lg text-sm transition-all duration-300 transform translate-y-2 opacity-0`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+        setTimeout(
+          () => toast.classList.remove("translate-y-2", "opacity-0"),
+          100,
+        );
+        setTimeout(() => {
+          toast.classList.add("translate-y-2", "opacity-0");
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
+
+      adminLoginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const u = adminUserInp.value.trim();
+        const p = adminPassInp.value.trim();
+        if (
+          u === ADMIN_CREDENTIALS.username &&
+          p === ADMIN_CREDENTIALS.password
+        ) {
+          sessionStorage.setItem("role", "admin");
+          sessionStorage.setItem("identifier", "Admin System");
+          showDashboard(true, "Admin System");
+          showToast("ចូលជា Admin បានជោគជ័យ!");
+        } else {
+          showToast(
+            "ឈ្មោះអ្នកប្រើប្រាស់ ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ!",
+            "error",
+          );
+        }
+      });
+
+      userLoginBtn.addEventListener("click", async () => {
+        try {
+          const result = await signInWithPopup(auth, provider);
+          sessionStorage.setItem("role", "user");
+          sessionStorage.setItem("identifier", result.user.email);
+          showDashboard(false, result.user.email);
+          showToast("ចូលគណនីជាមួយ Google បានជោគជ័យ!");
+        } catch (error) {
+          console.error("Google Login Error: ", error);
+          showToast("ការចូលគណនី Google មានបញ្ហា!", "error");
+        }
+      });
+
+      function showDashboard(adminStatus, identifier) {
+        isAdmin = adminStatus;
+        loginPage.classList.add("hidden");
+        dashboardPage.classList.remove("hidden");
+        userEmailSpan.textContent = identifier;
+
+        if (isAdmin) {
+          roleBadge.textContent = "ADMIN";
+          roleBadge.className =
+            "text-xs px-2 py-1 rounded font-bold bg-red-100 text-red-600";
+          adminFormContainer.classList.remove("hidden");
+          actionHeader.classList.remove("hidden");
+        } else {
+          roleBadge.textContent = "USER (ចូលមើល)";
+          roleBadge.className =
+            "text-xs px-2 py-1 rounded font-bold bg-green-100 text-green-600";
+          adminFormContainer.classList.add("hidden");
+          actionHeader.classList.add("hidden");
+        }
+        loadStudents();
+      }
+
+      logoutBtn.addEventListener("click", async () => {
+        sessionStorage.clear();
+        try {
+          await signOut(auth);
+        } catch (e) {}
+        dashboardPage.classList.add("hidden");
+        loginPage.classList.remove("hidden");
+        adminLoginForm.reset();
+        showToast("បានចាកចេញពីប្រព័ន្ធ!");
+      });
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const savedRole = sessionStorage.getItem("role");
+        const savedIdentifier = sessionStorage.getItem("identifier");
+        if (savedRole) {
+          showDashboard(savedRole === "admin", savedIdentifier);
+        }
+      });
+
+      async function loadStudents() {
+        studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">កំពុងទាញយកទិន្នន័យ...</td></tr>`;
+        try {
+          const dbRefInstance = dbRef(database);
+          const snapshot = await get(child(dbRefInstance, "students"));
+          allStudents = [];
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            Object.keys(data).forEach((key) => {
+              allStudents.push({ id: key, ...data[key] });
+            });
+          }
+          filteredStudents = [...allStudents];
+          updateStats();
+          currentPage = 1;
+          displayStudents();
+        } catch (error) {
+          console.error("Error loading data: ", error);
+        }
+      }
+
+      function updateStats() {
+        document.getElementById("totalStudents").textContent =
+          allStudents.length;
+        const maleCount = allStudents.filter(
+          (s) => s.gender === "ប្រុស",
+        ).length;
+        const femaleCount = allStudents.filter(
+          (s) => s.gender === "ស្រី",
+        ).length;
+        document.getElementById("totalMale").textContent = maleCount;
+        document.getElementById("totalFemale").textContent = femaleCount;
+        const uniqueClasses = new Set(allStudents.map((s) => s.classRoom)).size;
+        document.getElementById("totalClasses").textContent = uniqueClasses;
+      }
+
+      function displayStudents() {
+        studentTableBody.innerHTML = "";
+
+        if (filteredStudents.length === 0) {
+          studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">មិនទាន់មានទិន្នន័យសិស្សនៅឡើយទេ</td></tr>`;
+          pageInfo.textContent = "ទំព័រ 0 នៃ 0";
+          prevPageBtn.disabled = true;
+          nextPageBtn.disabled = true;
+          return;
+        }
+
+        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const paginatedData = filteredStudents.slice(start, end);
+
+        paginatedData.forEach((student) => {
+          const km = Number(student.scoreKm || 0);
+          const math = Number(student.scoreMath || 0);
+          const eng = Number(student.scoreEng || 0);
+          const gpa = ((km + math + eng) / 3).toFixed(2);
+
+          let attColor =
+            student.attendance === "មក"
+              ? "bg-green-100 text-green-700"
+              : student.attendance === "យឺត"
+                ? "bg-yellow-100 text-yellow-700"
+                : "bg-red-100 text-red-700";
+          let photo = student.photo || "https://via.placeholder.com/150";
+
+          let actionTd = "";
+          if (isAdmin) {
+            actionTd = `
+                        <td class="px-4 py-3 whitespace-nowrap text-center text-sm font-medium space-x-1 no-print">
+                            <button onclick="window.editStudent('${student.id}')" class="text-blue-600 hover:text-blue-900 bg-blue-50 px-2 py-1 rounded">កែប្រែ</button>
+                            <button onclick="window.deleteStudent('${student.id}')" class="text-red-600 hover:text-red-900 bg-red-50 px-2 py-1 rounded">លុប</button>
+                        </td>`;
+          }
+
+          const row = `
+                    <tr>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <img src="${photo}" class="w-10 h-10 rounded-full object-cover border" alt="Photo">
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${student.name}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${student.gender}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${student.classRoom}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-blue-600">${gpa}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm"><span class="px-2 py-1 rounded text-xs font-bold ${attColor}">${student.attendance || "មក"}</span></td>
+                        <td class="px-4 py-3 whitespace-nowrap text-center text-sm">
+                            <button onclick="window.viewProfile('${student.id}')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-bold">មើលប្រវត្តិរូប</button>
+                        </td>
+                        ${actionTd}
+                    </tr>
+                `;
+          studentTableBody.innerHTML += row;
+        });
+
+        pageInfo.textContent = `ទំព័រ ${currentPage} នៃ ${totalPages || 1}`;
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+      }
+
+      prevPageBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          displayStudents();
+        }
+      });
+
+      nextPageBtn.addEventListener("click", () => {
+        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          displayStudents();
+        }
+      });
+
+      searchInput.addEventListener("input", (e) => {
+        const keyword = e.target.value.toLowerCase();
+        filteredStudents = allStudents.filter(
+          (s) =>
+            s.name.toLowerCase().includes(keyword) ||
+            s.classRoom.toLowerCase().includes(keyword),
+        );
+        currentPage = 1;
+        displayStudents();
+      });
+
+      // Submit Form (Add / Edit) with Realtime Database & Storage
+      studentForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!isAdmin) return alert("អ្នកមិនមានសិទ្ធិទេ!");
+
+        const id = studentIdInp.value;
+        const photoInput = document.getElementById("photoFile");
+
+        let photoUrl = "";
+        if (isEditing) {
+          const existing = allStudents.find((s) => s.id === id);
+          photoUrl = existing ? existing.photo : "";
+        }
+
+        if (photoInput.files.length > 0) {
+          const file = photoInput.files[0];
+          const sRef = storageRef(
+            storage,
+            "student_photos/" + Date.now() + "_" + file.name,
+          );
+          try {
+            const snapshot = await uploadBytes(sRef, file);
+            photoUrl = await getDownloadURL(snapshot.ref);
+          } catch (error) {
+            console.error("Storage Upload Error: ", error);
+            showToast("មានបញ្ហាក្នុងការផ្ទុករូបថតទៅកាន់ Storage!", "error");
+            return;
+          }
+        }
+
+        const studentData = {
+          name: document.getElementById("name").value,
+          gender: document.getElementById("gender").value,
+          age: Number(document.getElementById("age").value),
+          classRoom: document.getElementById("classRoom").value,
+          dob: document.getElementById("dob").value,
+          phone: document.getElementById("phone").value,
+          address: document.getElementById("address").value,
+          scoreKm: Number(document.getElementById("scoreKm").value),
+          scoreMath: Number(document.getElementById("scoreMath").value),
+          scoreEng: Number(document.getElementById("scoreEng").value),
+          attendance: document.getElementById("attendanceStatus").value,
+          photo: photoUrl,
+          updatedAt: new Date().toISOString(),
+        };
+
+        try {
+          if (isEditing && id) {
+            await update(dbRef(database, "students/" + id), studentData);
+            showToast("បានកែប្រែព័ត៌មានសិស្សដោយជោគជ័យ!");
+            resetForm();
+          } else {
+            studentData.createdAt = new Date().toISOString();
+            const newStudentRef = push(dbRef(database, "students"));
+            await set(newStudentRef, studentData);
+            showToast("បានបន្ថែមសិស្សថ្មីដោយជោគជ័យ!");
+            studentForm.reset();
+          }
+          loadStudents();
+        } catch (error) {
+          console.error("Error saving to Realtime Database: ", error);
+          showToast("មានបញ្ហាក្នុងការរក្សាទុកទិន្នន័យ!", "error");
+        }
+      });
+
+      window.editStudent = function (id) {
+        const student = allStudents.find((s) => s.id === id);
+        if (!student) return;
+
+        studentIdInp.value = student.id;
+        document.getElementById("name").value = student.name;
+        document.getElementById("gender").value = student.gender;
+        document.getElementById("age").value = student.age;
+        document.getElementById("classRoom").value = student.classRoom;
+        document.getElementById("dob").value = student.dob || "";
+        document.getElementById("phone").value = student.phone || "";
+        document.getElementById("address").value = student.address || "";
+        document.getElementById("scoreKm").value = student.scoreKm || 0;
+        document.getElementById("scoreMath").value = student.scoreMath || 0;
+        document.getElementById("scoreEng").value = student.scoreEng || 0;
+        document.getElementById("attendanceStatus").value =
+          student.attendance || "មក";
+
+        formTitle.textContent = "កែប្រែព័ត៌មានសិស្ស (Admin)";
+        submitBtn.textContent = "កែប្រែទិន្នន័យ";
+        cancelEditBtn.classList.remove("hidden");
+        isEditing = true;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      cancelEditBtn.addEventListener("click", () => {
+        resetForm();
+      });
+
+      function resetForm() {
+        studentForm.reset();
+        studentIdInp.value = "";
+        formTitle.textContent = "បន្ថែមព័ត៌មានសិស្សថ្មី (Admin)";
+        submitBtn.textContent = "រក្សាទុកទិន្នន័យសិស្ស";
+        cancelEditBtn.classList.add("hidden");
+        isEditing = false;
+      }
+
+      window.deleteStudent = async function (id) {
+        if (!isAdmin) return alert("អ្នកគ្មានសិទ្ធិលុបទេ!");
+        if (confirm("តើអ្នកពិតជាចង់លុបទិន្នន័យសិស្សនេះមែនទេ?")) {
+          try {
+            await remove(dbRef(database, "students/" + id));
+            showToast("បានលុបទិន្នន័យសិស្សដោយជោគជ័យ!", "error");
+            loadStudents();
+          } catch (error) {
+            console.error("Error deleting from database: ", error);
+          }
+        }
+      };
+
+      // View Profile Modal
+      window.viewProfile = function (id) {
+        const student = allStudents.find((s) => s.id === id);
+        if (!student) return;
+
+        document.getElementById("modalPhoto").src =
+          student.photo || "https://via.placeholder.com/150";
+        document.getElementById("modalName").textContent = student.name;
+        document.getElementById("modalClass").textContent =
+          "ថ្នាក់: " + student.classRoom;
+        document.getElementById("modalGender").textContent = student.gender;
+        document.getElementById("modalAge").textContent =
+          student.age + " ឆ្នាំ";
+        document.getElementById("modalDob").textContent = student.dob || "-";
+        document.getElementById("modalPhone").textContent =
+          student.phone || "-";
+        document.getElementById("modalAddress").textContent =
+          student.address || "-";
+
+        const attBadge = document.getElementById("modalAttendance");
+        attBadge.textContent = student.attendance || "មក";
+        attBadge.className =
+          student.attendance === "មក"
+            ? "font-bold px-2 py-0.5 rounded text-xs bg-green-100 text-green-700"
+            : "font-bold px-2 py-0.5 rounded text-xs bg-red-100 text-red-700";
+
+        const km = Number(student.scoreKm || 0);
+        const math = Number(student.scoreMath || 0);
+        const eng = Number(student.scoreEng || 0);
+        const gpa = ((km + math + eng) / 3).toFixed(2);
+
+        document.getElementById("modalScoreKm").textContent = km;
+        document.getElementById("modalScoreMath").textContent = math;
+        document.getElementById("modalScoreEng").textContent = eng;
+        document.getElementById("modalGpa").textContent = gpa;
+
+        profileModal.classList.remove("hidden");
+      };
+
+      closeModalBtn.addEventListener("click", () => {
+        profileModal.classList.add("hidden");
+      });
+      window.addEventListener("click", (e) => {
+        if (e.target === profileModal) profileModal.classList.add("hidden");
+      });
+
+      exportExcelBtn.addEventListener("click", () => {
+        if (allStudents.length === 0) {
+          showToast("មិនទាន់មានទិន្នន័យសម្រាប់ Export ទេ!", "error");
+          return;
+        }
+
+        let csvContent =
+          "\uFEFFល.រ,ឈ្មោះពេញ,ភេទ,អាយុ,ថ្នាក់រៀន,ភាសាខ្មែរ,គណិតវិទ្យា,អង់គ្លេស,មធ្យភាគ(GPA),វត្តមាន,លេខទូរស័ព្ទ,អាសយដ្ឋាន\n";
+        allStudents.forEach((s, index) => {
+          const km = Number(s.scoreKm || 0);
+          const math = Number(s.scoreMath || 0);
+          const eng = Number(s.scoreEng || 0);
+          const gpa = ((km + math + eng) / 3).toFixed(2);
+
+          let row = [
+            index + 1,
+            `"${s.name || ""}"`,
+            `"${s.gender || ""}"`,
+            s.age || "",
+            `"${s.classRoom || ""}"`,
+            km,
+            math,
+            eng,
+            gpa,
+            `"${s.attendance || "មក"}"`,
+            `"${s.phone || ""}"`,
+            `"${s.address || ""}"`,
+          ];
+          csvContent += row.join(",") + "\n";
+        });
+
+        const blob = new Blob([csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.setAttribute("href", url);
+        a.setAttribute("download", "Student_Comprehensive_Report.csv");
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast("បានទាញយកឯកសារ Excel (CSV) រួចរាល់!");
+      });
+
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+    </script>
+  </body>
+</html>
