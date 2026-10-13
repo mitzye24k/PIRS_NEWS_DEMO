@@ -3,311 +3,415 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ប្រព័ន្ធគ្រប់គ្រងសិស្ស - Realtime Database & Storage</title>
+    <title>ប្រព័ន្ធគ្រប់គ្រងសិស្ស - Student Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      body {
-        font-family: "Kantumruy Pro", sans-serif;
-      }
-      @media print {
-        body * {
-          visibility: hidden;
-        }
-        #printableArea,
-        #printableArea * {
-          visibility: visible;
-        }
-        #printableArea {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-        }
-        .no-print {
-          display: none !important;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body class="bg-gray-100 min-h-screen p-4 flex items-center justify-center">
+  <body
+    class="bg-slate-50 min-h-screen text-slate-800 flex items-center justify-center p-2 sm:p-6"
+  >
     <!-- Toast Notification Container -->
     <div id="toastContainer" class="fixed top-5 right-5 z-50 space-y-2"></div>
 
-    <!-- ទី១៖ ផ្ទាំង Login Page -->
+    <!-- Language Switcher Floating Button -->
+    <div class="fixed top-4 right-4 z-40 no-print">
+      <button
+        id="langToggleBtn"
+        class="bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold shadow-sm hover:bg-slate-100 transition flex items-center gap-1.5"
+      >
+        🌐 <span id="currentLangLabel">KH / EN</span>
+      </button>
+    </div>
+
+    <!-- Login Page -->
     <div
       id="loginPage"
-      class="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg"
+      class="max-w-md w-full bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-100 relative"
     >
       <div class="mb-6 text-center">
-        <h1 class="text-3xl font-bold text-blue-600 mb-2">ស្វាគមន៍មកកាន់</h1>
-        <p class="text-gray-600">ប្រព័ន្ធគ្រប់គ្រងសិស្ស</p>
+        <div
+          class="inline-flex p-3 bg-indigo-50 text-indigo-600 rounded-2xl mb-3 text-3xl shadow-inner"
+        >
+          🎓
+        </div>
+        <h1
+          id="t_welcome"
+          class="text-2xl sm:text-3xl font-bold text-slate-900 mb-1"
+        >
+          ស្វាគមន៍មកកាន់
+        </h1>
+        <p id="t_subWelcome" class="text-sm text-slate-500">
+          ប្រព័ន្ធគ្រប់គ្រងសិស្សកម្រិតខ្ពស់
+        </p>
       </div>
 
-      <!-- Admin Login -->
-      <div class="mb-6 bg-blue-50 p-4 rounded-xl border border-blue-200">
-        <h2 class="text-sm font-bold text-blue-700 mb-3 uppercase">
-          ចូលសម្រាប់ Admin
+      <div
+        class="mb-6 bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200"
+      >
+        <h2
+          id="t_adminLoginTitle"
+          class="text-xs font-bold text-indigo-600 mb-3 uppercase tracking-wider"
+        >
+          ចូលសម្រាប់រដ្ឋបាល (Admin)
         </h2>
         <form id="adminLoginForm" class="space-y-3">
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
-              >ឈ្មោះអ្នកប្រើប្រាស់ (Username)</label
+            <label
+              id="t_username"
+              class="block text-xs font-medium text-slate-600 mb-1"
+              >ឈ្មោះអ្នកប្រើប្រាស់</label
             >
             <input
               type="text"
               id="adminUser"
               required
-              class="w-full p-2 text-sm border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              placeholder="admin123"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
-              >ពាក្យសម្ងាត់ (Password)</label
+            <label
+              id="t_password"
+              class="block text-xs font-medium text-slate-600 mb-1"
+              >ពាក្យសម្ងាត់</label
             >
             <input
               type="password"
               id="adminPass"
               required
-              class="w-full p-2 text-sm border rounded-md focus:ring-blue-500 focus:border-blue-500"
+              placeholder="••••••••"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white"
             />
           </div>
           <button
             type="submit"
-            class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition text-sm font-medium"
+            id="t_adminLoginBtn"
+            class="w-full bg-indigo-600 text-white py-2.5 rounded-xl hover:bg-indigo-700 transition text-sm font-semibold shadow-lg shadow-indigo-100"
           >
             ចូលជា Admin
           </button>
         </form>
       </div>
 
-      <div class="relative flex py-2 items-center">
-        <div class="flex-grow border-t border-gray-300"></div>
-        <span class="flex-shrink mx-4 text-gray-400 text-xs">ឬ</span>
-        <div class="flex-grow border-t border-gray-300"></div>
+      <div class="relative flex py-1 items-center mb-6">
+        <div class="flex-grow border-t border-slate-200"></div>
+        <span id="t_or" class="flex-shrink mx-4 text-slate-400 text-xs">ឬ</span>
+        <div class="flex-grow border-t border-slate-200"></div>
       </div>
 
-      <!-- User Login ជាមួយ Google -->
-      <div class="mt-4 text-center">
-        <h2 class="text-sm font-bold text-gray-700 mb-3 uppercase">
-          ចូលសម្រាប់អ្នកទស្សនាទូទៅ
-        </h2>
+      <div class="text-center">
         <button
           id="userLoginBtn"
-          class="w-full bg-red-500 text-white py-3 px-4 rounded-xl hover:bg-red-600 transition flex items-center justify-center gap-3 font-medium shadow-md text-sm"
+          class="w-full bg-white border border-slate-300 text-slate-700 py-3 px-4 rounded-xl hover:bg-slate-50 transition flex items-center justify-center gap-3 font-medium shadow-sm text-sm"
         >
-          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path
-              d="M12.24 10.28V14h5.45c-.24 1.25-1.4 3.65-5.45 3.65-3.28 0-5.96-2.72-5.96-6s2.68-6 5.96-6c1.87 0 3.12.79 3.84 1.47l2.89-2.79C17.2 3.82 14.94 3 12.24 3 7.02 3 2.78 7.24 2.78 12.46s4.24 9.46 9.46 9.46c5.46 0 9.08-3.84 9.08-9.24 0-.64-.07-1.12-.18-1.62H12.24z"
+              fill="#4285F4"
+              d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
+            />
+            <path
+              fill="#34A853"
+              d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.19v3.15C3.17 21.31 7.22 24 12 24z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.19C.43 8.13 0 9.87 0 12s.43 3.87 1.19 5.4l4.08-3.16z"
+            />
+            <path
+              fill="#EA4335"
+              d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.17 2.69 1.19 6.6l4.08 3.15c.95-2.85 3.6-4.96 6.73-4.96z"
             />
           </svg>
-          ចូលគណនីជាមួយ Google (User ធម្មតា)
+          <span id="t_googleLogin">ចូលគណនីជាមួយ Google</span>
         </button>
       </div>
     </div>
 
-    <!-- ទី២៖ ផ្ទាំងការងារ (Dashboard) -->
+    <!-- Dashboard Page -->
     <div
       id="dashboardPage"
-      class="hidden max-w-7xl w-full mx-auto bg-white p-6 rounded-xl shadow-md min-h-[90vh] flex flex-col"
+      class="hidden max-w-7xl w-full mx-auto bg-white p-4 sm:p-6 rounded-2xl shadow-xl border border-slate-100 min-h-[92vh] flex flex-col"
     >
-      <!-- Header & User Info -->
-      <div class="flex justify-between items-center mb-6 border-b pb-4">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-100 pb-4"
+      >
         <div>
-          <h1 class="text-2xl font-bold text-blue-600">
-            ផ្ទាំងការងារគ្រប់គ្រងសិស្ស
+          <h1
+            id="t_dashTitle"
+            class="text-xl sm:text-2xl font-bold text-slate-900"
+          >
+            ប្រព័ន្ធគ្រប់គ្រងសិស្ស
           </h1>
-          <div class="flex items-center gap-2 mt-1">
+          <div class="flex items-center gap-2 mt-1 flex-wrap">
             <span
               id="userEmail"
-              class="text-sm text-gray-600 font-medium"
+              class="text-xs sm:text-sm text-slate-500 font-medium bg-slate-100 px-2.5 py-1 rounded-lg"
             ></span>
             <span
               id="roleBadge"
-              class="text-xs px-2 py-1 rounded font-bold"
+              class="text-xs px-2.5 py-1 rounded-lg font-bold"
             ></span>
           </div>
         </div>
-        <button
-          id="logoutBtn"
-          class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300 transition"
-        >
-          ចាកចេញ (Logout)
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            id="dashLangBtn"
+            class="bg-slate-100 border border-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs font-bold hover:bg-slate-200 transition"
+          >
+            🌐 KH/EN
+          </button>
+          <button
+            id="logoutBtn"
+            class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 transition"
+          >
+            ចាកចេញ
+          </button>
+        </div>
       </div>
 
-      <!-- Dashboard Summary Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+      <div
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-6"
+      >
         <div
-          class="bg-blue-50 border border-blue-200 p-4 rounded-xl flex items-center justify-between"
+          class="bg-indigo-50/50 border border-indigo-100 p-4 rounded-2xl flex items-center justify-between"
         >
           <div>
-            <p class="text-xs text-blue-600 font-bold uppercase">សិស្សសរុប</p>
-            <h3 id="totalStudents" class="text-2xl font-bold text-blue-800">
-              0
-            </h3>
-          </div>
-          <span class="text-3xl">👥</span>
-        </div>
-        <div
-          class="bg-green-50 border border-green-200 p-4 rounded-xl flex items-center justify-between"
-        >
-          <div>
-            <p class="text-xs text-green-600 font-bold uppercase">សិស្សប្រុស</p>
-            <h3 id="totalMale" class="text-2xl font-bold text-green-800">0</h3>
-          </div>
-          <span class="text-3xl">👦</span>
-        </div>
-        <div
-          class="bg-pink-50 border border-pink-200 p-4 rounded-xl flex items-center justify-between"
-        >
-          <div>
-            <p class="text-xs text-pink-600 font-bold uppercase">សិស្សស្រី</p>
-            <h3 id="totalFemale" class="text-2xl font-bold text-pink-800">0</h3>
-          </div>
-          <span class="text-3xl">👧</span>
-        </div>
-        <div
-          class="bg-red-50 border border-red-200 p-4 rounded-xl flex items-center justify-between"
-        >
-          <div>
-            <p class="text-xs text-red-600 font-bold uppercase">
-              អវត្តមានសរុប (១សប្តាហ៍)
+            <p
+              id="t_cardTotal"
+              class="text-[11px] text-indigo-600 font-bold uppercase tracking-wider"
+            >
+              សិស្សសរុប
             </p>
-            <h3 id="totalAbsences" class="text-2xl font-bold text-red-800">
+            <h3
+              id="totalStudents"
+              class="text-xl sm:text-2xl font-bold text-indigo-900 mt-1"
+            >
               0
             </h3>
           </div>
-          <span class="text-3xl">❌</span>
+          <span class="text-2xl sm:text-3xl bg-white p-2 rounded-xl shadow-sm"
+            >👥</span
+          >
         </div>
         <div
-          class="bg-purple-50 border border-purple-200 p-4 rounded-xl flex items-center justify-between"
+          class="bg-emerald-50/50 border border-emerald-100 p-4 rounded-2xl flex items-center justify-between"
         >
           <div>
-            <p class="text-xs text-purple-600 font-bold uppercase">
+            <p
+              id="t_cardMale"
+              class="text-[11px] text-emerald-600 font-bold uppercase tracking-wider"
+            >
+              សិស្សប្រុស
+            </p>
+            <h3
+              id="totalMale"
+              class="text-xl sm:text-2xl font-bold text-emerald-900 mt-1"
+            >
+              0
+            </h3>
+          </div>
+          <span class="text-2xl sm:text-3xl bg-white p-2 rounded-xl shadow-sm"
+            >👦</span
+          >
+        </div>
+        <div
+          class="bg-pink-50/50 border border-pink-100 p-4 rounded-2xl flex items-center justify-between"
+        >
+          <div>
+            <p
+              id="t_cardFemale"
+              class="text-[11px] text-pink-600 font-bold uppercase tracking-wider"
+            >
+              សិស្សស្រី
+            </p>
+            <h3
+              id="totalFemale"
+              class="text-xl sm:text-2xl font-bold text-pink-900 mt-1"
+            >
+              0
+            </h3>
+          </div>
+          <span class="text-2xl sm:text-3xl bg-white p-2 rounded-xl shadow-sm"
+            >👧</span
+          >
+        </div>
+        <div
+          class="bg-rose-50/50 border border-rose-100 p-4 rounded-2xl flex items-center justify-between"
+        >
+          <div>
+            <p
+              id="t_cardAbsence"
+              class="text-[11px] text-rose-600 font-bold uppercase tracking-wider"
+            >
+              អវត្តមាន (១សប្តាហ៍)
+            </p>
+            <h3
+              id="totalAbsences"
+              class="text-xl sm:text-2xl font-bold text-rose-900 mt-1"
+            >
+              0
+            </h3>
+          </div>
+          <span class="text-2xl sm:text-3xl bg-white p-2 rounded-xl shadow-sm"
+            >❌</span
+          >
+        </div>
+        <div
+          class="bg-purple-50/50 border border-purple-100 p-4 rounded-2xl flex items-center justify-between col-span-2 sm:col-span-1"
+        >
+          <div>
+            <p
+              id="t_cardClass"
+              class="text-[11px] text-purple-600 font-bold uppercase tracking-wider"
+            >
               ថ្នាក់រៀនសរុប
             </p>
-            <h3 id="totalClasses" class="text-2xl font-bold text-purple-800">
+            <h3
+              id="totalClasses"
+              class="text-xl sm:text-2xl font-bold text-purple-900 mt-1"
+            >
               0
             </h3>
           </div>
-          <span class="text-3xl">🏫</span>
+          <span class="text-2xl sm:text-3xl bg-white p-2 rounded-xl shadow-sm"
+            >🏫</span
+          >
         </div>
       </div>
 
-      <!-- ទម្រង់បន្ថែម/កែប្រែទិន្នន័យសិស្ស (សម្រាប់ Admin) -->
       <div
         id="adminFormContainer"
-        class="hidden mb-6 bg-blue-50 p-4 rounded-xl border border-blue-200 no-print"
+        class="hidden mb-6 bg-slate-50 p-4 sm:p-6 rounded-2xl border border-slate-200 no-print"
       >
-        <h2 id="formTitle" class="text-lg font-semibold text-blue-700 mb-3">
-          បន្ថែមព័ត៌មានសិស្ស និងកំណត់អវត្តមានក្នុង១សប្តាហ៍ (Admin)
+        <h2
+          id="formTitle"
+          class="text-base sm:text-lg font-bold text-indigo-700 mb-4 flex items-center gap-2"
+        >
+          <span>📝</span> <span id="t_formHeader">បន្ថែមព័ត៌មានសិស្សថ្មី</span>
         </h2>
         <form
           id="studentForm"
-          class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
         >
           <input type="hidden" id="studentId" />
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblFullName"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >ឈ្មោះពេញ</label
             >
             <input
               type="text"
               id="name"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblGender"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >ភេទ</label
             >
             <select
               id="gender"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             >
-              <option value="ប្រុស">ប្រុស</option>
-              <option value="ស្រី">ស្រី</option>
+              <option value="ប្រុស" id="t_optMale">ប្រុស</option>
+              <option value="ស្រី" id="t_optFemale">ស្រី</option>
             </select>
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblAge"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >អាយុ</label
             >
             <input
               type="number"
               id="age"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblClass"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >ថ្នាក់រៀន</label
             >
             <input
               type="text"
               id="classRoom"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblDob"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >ថ្ងៃខែឆ្នាំកំណើត</label
             >
             <input
               type="date"
               id="dob"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblPhone"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >លេខទូរស័ព្ទអាណាព្យាបាល</label
             >
             <input
               type="text"
               id="phone"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1"
+            <label
+              id="t_lblPhoto"
+              class="block text-xs font-semibold text-slate-600 mb-1"
               >រូបថតសិស្ស (Storage)</label
             >
             <input
               type="file"
               id="photoFile"
               accept="image/*"
-              class="w-full p-1 text-xs border rounded-md bg-white"
+              class="w-full p-1.5 text-xs border border-slate-300 rounded-xl bg-white file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700"
             />
           </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs font-medium text-gray-700 mb-1"
-              >អាសយដ្ឋានបច្ចុប្បន្ន</label
+          <div>
+            <label
+              id="t_lblAddress"
+              class="block text-xs font-semibold text-slate-600 mb-1"
+              >អាសយដ្ឋាន</label
             >
             <input
               type="text"
               id="address"
               required
-              class="w-full p-2 text-sm border rounded-md bg-white"
+              class="w-full p-2.5 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>
 
-          <!-- ផ្នែក Admin កំណត់ពិន្ទុ និងចំនួនអវត្តមានក្នុង១សប្តាហ៍ -->
           <div
-            class="md:col-span-3 lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-2 pt-2 border-t border-blue-200"
+            class="sm:col-span-2 lg:col-span-4 grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-200"
           >
             <div>
-              <label class="block text-xs font-medium text-gray-700"
+              <label
+                id="t_lblScoreKm"
+                class="block text-xs font-semibold text-slate-600 mb-1"
                 >ពិន្ទុភាសាខ្មែរ</label
               >
               <input
@@ -316,11 +420,13 @@
                 min="0"
                 max="100"
                 value="0"
-                class="w-full p-1.5 text-sm border rounded-md bg-white"
+                class="w-full p-2 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               />
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700"
+              <label
+                id="t_lblScoreMath"
+                class="block text-xs font-semibold text-slate-600 mb-1"
                 >ពិន្ទុគណិតវិទ្យា</label
               >
               <input
@@ -329,11 +435,13 @@
                 min="0"
                 max="100"
                 value="0"
-                class="w-full p-1.5 text-sm border rounded-md bg-white"
+                class="w-full p-2 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               />
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700"
+              <label
+                id="t_lblScoreEng"
+                class="block text-xs font-semibold text-slate-600 mb-1"
                 >ពិន្ទុអង់គ្លេស</label
               >
               <input
@@ -342,118 +450,138 @@
                 min="0"
                 max="100"
                 value="0"
-                class="w-full p-1.5 text-sm border rounded-md bg-white"
+                class="w-full p-2 text-sm border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
               />
             </div>
             <div>
               <label
-                class="block text-xs font-medium text-gray-700 font-bold text-red-600"
-                >អវត្តមានក្នុង១សប្តាហ៍ (ដង)</label
+                id="t_lblAbsenceInput"
+                class="block text-xs font-semibold text-rose-600 mb-1"
+                >អវត្តមាន (១សប្តាហ៍)</label
               >
               <input
                 type="number"
                 id="absenceDays"
                 min="0"
                 value="0"
-                class="w-full p-1.5 text-sm border rounded-md bg-white font-bold text-red-600 border-red-300"
+                class="w-full p-2 text-sm border border-rose-200 rounded-xl bg-white text-rose-600 font-bold focus:ring-2 focus:ring-rose-500 focus:outline-none"
               />
             </div>
           </div>
 
-          <div class="md:col-span-3 lg:col-span-4 flex justify-end gap-2 pt-2">
+          <div
+            class="sm:col-span-2 lg:col-span-4 flex items-center justify-end gap-3 pt-2"
+          >
             <button
               type="button"
               id="cancelEditBtn"
-              class="hidden bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition text-sm"
+              class="hidden bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl hover:bg-slate-300 transition text-sm font-medium"
             >
               បោះបង់
             </button>
             <button
               type="submit"
               id="submitBtn"
-              class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition text-sm font-medium"
+              class="bg-indigo-600 text-white px-6 py-2.5 rounded-xl hover:bg-indigo-700 transition text-sm font-semibold shadow-md shadow-indigo-100"
             >
-              រក្សាទុកទិន្នន័យសិស្ស
+              រក្សាទុកទិន្នន័យ
             </button>
           </div>
         </form>
       </div>
 
-      <!-- ប្រអប់ស្វែងរក និង ប៊ូតុងបញ្ជា -->
       <div
-        class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4 no-print"
+        class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mb-4 no-print"
       >
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="ស្វែងរកតាមឈ្មោះ ឬ ថ្នាក់រៀន..."
-          class="w-full md:w-1/2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-sm"
-        />
-        <div class="flex gap-2 w-full md:w-auto justify-end">
+        <div class="relative w-full sm:w-80">
+          <span
+            class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"
+            >🔍</span
+          >
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="ស្វែងរកតាមឈ្មោះ ឬថ្នាក់រៀន..."
+            class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-slate-50/50"
+          />
+        </div>
+        <div class="flex gap-2 justify-end">
           <button
             id="exportExcelBtn"
-            class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition text-sm flex items-center gap-1"
+            class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl hover:bg-emerald-700 transition text-sm font-medium flex items-center gap-1.5 shadow-sm"
           >
-            📥 Excel
+            📥 <span id="t_btnExcel">ទាញយក Excel</span>
           </button>
           <button
             id="printBtn"
-            class="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition text-sm flex items-center gap-1"
+            class="bg-slate-700 text-white px-4 py-2.5 rounded-xl hover:bg-slate-800 transition text-sm font-medium flex items-center gap-1.5 shadow-sm"
           >
-            🖨️ ព្រីន / PDF
+            🖨️ <span id="t_btnPrint">ព្រីន / PDF</span>
           </button>
         </div>
       </div>
 
-      <!-- តារាងបង្ហាញទិន្នន័យ -->
       <div id="printableArea" class="flex-grow flex flex-col">
         <div class="hidden print:block text-center mb-4">
-          <h2 class="text-xl font-bold">បញ្ជីឈ្មោះ និងលទ្ធផលសិក្សាសិស្សសរុប</h2>
-          <p class="text-xs text-gray-500">ប្រព័ន្ធគ្រប់គ្រងសិស្ស</p>
+          <h2 id="t_printTitle" class="text-xl font-bold">
+            បញ្ជីឈ្មោះ និងលទ្ធផលសិក្សាសិស្សសរុប
+          </h2>
+          <p id="t_printSub" class="text-xs text-slate-500">
+            ប្រព័ន្ធគ្រប់គ្រងសិស្ស
+          </p>
         </div>
 
-        <div class="overflow-y-auto flex-grow border rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50 sticky top-0">
+        <div
+          class="overflow-x-auto flex-grow border border-slate-200 rounded-2xl shadow-sm"
+        >
+          <table class="min-w-full divide-y divide-slate-200 text-left">
+            <thead class="bg-slate-50 sticky top-0">
               <tr>
                 <th
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  id="th_photo"
+                  class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
                   រូបថត
                 </th>
                 <th
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  id="th_name"
+                  class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
                   ឈ្មោះ
                 </th>
                 <th
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  id="th_gender"
+                  class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
                   ភេទ
                 </th>
                 <th
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  id="th_class"
+                  class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
                   ថ្នាក់
                 </th>
                 <th
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  id="th_gpa"
+                  class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
                   មធ្យភាគ (GPA)
                 </th>
                 <th
-                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  id="th_absence"
+                  class="px-4 py-3 text-xs font-bold text-slate-500 uppercase"
                 >
-                  អវត្តមាន (១សប្តាហ៍)
+                  អវត្តមាន
                 </th>
                 <th
-                  class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase"
+                  id="th_profile"
+                  class="px-4 py-3 text-center text-xs font-bold text-slate-500 uppercase"
                 >
                   ប្រវត្តិរូប
                 </th>
                 <th
                   id="actionHeader"
-                  class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase hidden no-print"
+                  class="px-4 py-3 text-center text-xs font-bold text-slate-500 uppercase hidden no-print"
                 >
                   សកម្មភាព
                 </th>
@@ -461,29 +589,32 @@
             </thead>
             <tbody
               id="studentTableBody"
-              class="bg-white divide-y divide-gray-200"
-            >
-              <!-- ទិន្នន័យបង្ហាញទីនេះ -->
-            </tbody>
+              class="bg-white divide-y divide-slate-100 text-sm"
+            ></tbody>
           </table>
         </div>
       </div>
 
-      <!-- Pagination Controls -->
-      <div class="flex justify-between items-center mt-4 no-print">
-        <span id="pageInfo" class="text-sm text-gray-600">កំពុងបង្ហាញ...</span>
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 mt-4 pt-3 border-t border-slate-100 no-print"
+      >
+        <span
+          id="pageInfo"
+          class="text-xs sm:text-sm text-slate-500 font-medium"
+          >កំពុងបង្ហាញ...</span
+        >
         <div class="flex gap-2">
           <button
             id="prevPageBtn"
-            class="bg-gray-200 px-3 py-1 rounded text-sm hover:bg-gray-300 disabled:opacity-50"
+            class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 disabled:opacity-40 transition"
           >
-            មុន
+            <span id="t_prev">មុន</span>
           </button>
           <button
             id="nextPageBtn"
-            class="bg-gray-200 px-3 py-1 rounded text-sm hover:bg-gray-300 disabled:opacity-50"
+            class="bg-slate-100 text-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium hover:bg-slate-200 disabled:opacity-40 transition"
           >
-            បន្ទាប់
+            <span id="t_next">បន្ទាប់</span>
           </button>
         </div>
       </div>
@@ -492,596 +623,107 @@
     <!-- Student Profile Modal -->
     <div
       id="profileModal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4"
+      class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"
     >
-      <div class="bg-white max-w-lg w-full rounded-2xl shadow-2xl p-6 relative">
+      <div
+        class="bg-white max-w-md w-full rounded-3xl shadow-2xl p-6 relative border border-slate-100"
+      >
         <button
           id="closeModalBtn"
-          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold"
+          class="absolute top-4 right-4 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 transition font-bold"
         >
           &times;
         </button>
-        <div class="flex flex-col items-center text-center mb-6">
+        <div class="flex flex-col items-center text-center mb-5">
           <img
             id="modalPhoto"
             src="https://via.placeholder.com/150"
             alt="Photo"
-            class="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-md mb-3"
+            class="w-24 h-24 rounded-full object-cover border-4 border-indigo-50 shadow-md mb-3"
           />
-          <h3 id="modalName" class="text-xl font-bold text-gray-800"></h3>
-          <p id="modalClass" class="text-sm text-blue-600 font-medium"></p>
+          <h3 id="modalName" class="text-xl font-bold text-slate-900"></h3>
+          <p
+            id="modalClass"
+            class="text-xs text-indigo-600 font-semibold bg-indigo-50 px-3 py-1 rounded-full mt-1"
+          ></p>
         </div>
-        <div class="space-y-3 text-sm border-t border-b py-4 mb-4">
+        <div
+          class="space-y-2.5 text-sm border-t border-b border-slate-100 py-4 mb-4 text-slate-600"
+        >
           <div class="flex justify-between">
-            <span class="text-gray-500">ភេទ៖</span>
-            <span id="modalGender" class="font-medium"></span>
+            <span id="m_gender">ភេទ៖</span>
+            <span id="modalGender" class="font-semibold text-slate-900"></span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500">អាយុ៖</span>
-            <span id="modalAge" class="font-medium"></span>
+            <span id="m_age">អាយុ៖</span>
+            <span id="modalAge" class="font-semibold text-slate-900"></span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500">ថ្ងៃខែឆ្នាំកំណើត៖</span>
-            <span id="modalDob" class="font-medium"></span>
+            <span id="m_dob">ថ្ងៃខែឆ្នាំកំណើត៖</span>
+            <span id="modalDob" class="font-semibold text-slate-900"></span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500">លេខទូរស័ព្ទអាណាព្យាបាល៖</span>
-            <span id="modalPhone" class="font-medium"></span>
+            <span id="m_phone">លេខទូរស័ព្ទ៖</span>
+            <span id="modalPhone" class="font-semibold text-slate-900"></span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500">អាសយដ្ឋាន៖</span>
-            <span id="modalAddress" class="font-medium"></span>
+            <span id="m_address">អាសយដ្ឋាន៖</span>
+            <span id="modalAddress" class="font-semibold text-slate-900"></span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-500">អវត្តមានក្នុង១សប្តាហ៍៖</span>
+            <span id="m_absence">អវត្តមាន (១សប្តាហ៍)៖</span>
             <span
               id="modalAbsence"
-              class="font-bold px-2 py-0.5 rounded text-xs bg-red-100 text-red-700"
+              class="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg"
             ></span>
           </div>
         </div>
         <div>
-          <h4 class="text-sm font-bold text-gray-700 mb-2">
+          <h4
+            id="m_scoreTitle"
+            class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2"
+          >
             លទ្ធផលពិន្ទុ និង GPA
           </h4>
           <div
-            class="grid grid-cols-3 gap-2 text-center text-xs bg-gray-50 p-3 rounded-xl border"
+            class="grid grid-cols-3 gap-2 text-center text-xs bg-slate-50 p-3 rounded-2xl border border-slate-100"
           >
             <div>
-              ភាសាខ្មែរ:
-              <span id="modalScoreKm" class="font-bold block text-sm">0</span>
+              <span id="m_km">ភាសាខ្មែរ</span>:
+              <span
+                id="modalScoreKm"
+                class="font-bold block text-sm text-slate-800"
+                >0</span
+              >
             </div>
             <div>
-              គណិតវិទ្យា:
-              <span id="modalScoreMath" class="font-bold block text-sm">0</span>
+              <span id="m_math">គណិតវិទ្យា</span>:
+              <span
+                id="modalScoreMath"
+                class="font-bold block text-sm text-slate-800"
+                >0</span
+              >
             </div>
             <div>
-              អង់គ្លេស:
-              <span id="modalScoreEng" class="font-bold block text-sm">0</span>
+              <span id="m_eng">អង់គ្លេស</span>:
+              <span
+                id="modalScoreEng"
+                class="font-bold block text-sm text-slate-800"
+                >0</span
+              >
             </div>
           </div>
           <div
-            class="mt-3 text-center bg-blue-50 p-2 rounded-xl text-blue-700 font-bold text-sm"
+            class="mt-3 text-center bg-indigo-50/70 p-3 rounded-2xl text-indigo-700 font-bold text-sm border border-indigo-100/50"
           >
-            ពិន្ទុមធ្យភាគសរុប (GPA): <span id="modalGpa">0.00</span> / 100
+            <span id="m_gpaText">ពិន្ទុមធ្យភាគសរុប (GPA)</span>:
+            <span id="modalGpa" class="text-base font-extrabold">0.00</span> /
+            100
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Firebase SDK & Script -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-      import {
-        getDatabase,
-        ref as dbRef,
-        set,
-        push,
-        update,
-        remove,
-        get,
-        child,
-      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-      import {
-        getStorage,
-        ref as storageRef,
-        uploadBytes,
-        getDownloadURL,
-      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-      import {
-        getAuth,
-        GoogleAuthProvider,
-        signInWithPopup,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-      const firebaseConfig = {
-        apiKey: "AIzaSyCcPdzU1Pacj6bT3MhwuKgZI3dGaBHQYMg",
-        authDomain: "fir-e5642.firebaseapp.com",
-        databaseURL:
-          "https://fir-e5642-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "fir-e5642",
-        storageBucket: "fir-e5642.firebasestorage.app",
-        messagingSenderId: "1049370185512",
-        appId: "1:1049370185512:web:cac59e770f126929c0ca1d",
-        measurementId: "G-0SX8QNHQK7",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
-      const storage = getStorage(app);
-      const auth = getAuth(app);
-      const provider = new GoogleAuthProvider();
-
-      const ADMIN_CREDENTIALS = {
-        username: "admin123",
-        password: "password123",
-      };
-
-      let allStudents = [];
-      let filteredStudents = [];
-      let isAdmin = false;
-      let isEditing = false;
-      let currentPage = 1;
-      const rowsPerPage = 5;
-
-      // Elements
-      const loginPage = document.getElementById("loginPage");
-      const dashboardPage = document.getElementById("dashboardPage");
-      const adminLoginForm = document.getElementById("adminLoginForm");
-      const adminUserInp = document.getElementById("adminUser");
-      const adminPassInp = document.getElementById("adminPass");
-      const userLoginBtn = document.getElementById("userLoginBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const userEmailSpan = document.getElementById("userEmail");
-      const roleBadge = document.getElementById("roleBadge");
-      const adminFormContainer = document.getElementById("adminFormContainer");
-      const studentForm = document.getElementById("studentForm");
-      const studentTableBody = document.getElementById("studentTableBody");
-      const actionHeader = document.getElementById("actionHeader");
-      const searchInput = document.getElementById("searchInput");
-      const formTitle = document.getElementById("formTitle");
-      const submitBtn = document.getElementById("submitBtn");
-      const cancelEditBtn = document.getElementById("cancelEditBtn");
-      const studentIdInp = document.getElementById("studentId");
-      const exportExcelBtn = document.getElementById("exportExcelBtn");
-      const printBtn = document.getElementById("printBtn");
-      const toastContainer = document.getElementById("toastContainer");
-      const prevPageBtn = document.getElementById("prevPageBtn");
-      const nextPageBtn = document.getElementById("nextPageBtn");
-      const pageInfo = document.getElementById("pageInfo");
-      const profileModal = document.getElementById("profileModal");
-      const closeModalBtn = document.getElementById("closeModalBtn");
-
-      function showToast(message, type = "success") {
-        const toast = document.createElement("div");
-        const bgColor = type === "success" ? "bg-green-600" : "bg-red-600";
-        toast.className = `${bgColor} text-white px-4 py-2 rounded-lg shadow-lg text-sm transition-all duration-300 transform translate-y-2 opacity-0`;
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-        setTimeout(
-          () => toast.classList.remove("translate-y-2", "opacity-0"),
-          100,
-        );
-        setTimeout(() => {
-          toast.classList.add("translate-y-2", "opacity-0");
-          setTimeout(() => toast.remove(), 300);
-        }, 3000);
-      }
-
-      adminLoginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const u = adminUserInp.value.trim();
-        const p = adminPassInp.value.trim();
-        if (
-          u === ADMIN_CREDENTIALS.username &&
-          p === ADMIN_CREDENTIALS.password
-        ) {
-          sessionStorage.setItem("role", "admin");
-          sessionStorage.setItem("identifier", "Admin System");
-          showDashboard(true, "Admin System");
-          showToast("ចូលជា Admin បានជោគជ័យ!");
-        } else {
-          showToast(
-            "ឈ្មោះអ្នកប្រើប្រាស់ ឬ ពាក្យសម្ងាត់មិនត្រឹមត្រូវ!",
-            "error",
-          );
-        }
-      });
-
-      userLoginBtn.addEventListener("click", async () => {
-        try {
-          const result = await signInWithPopup(auth, provider);
-          sessionStorage.setItem("role", "user");
-          sessionStorage.setItem("identifier", result.user.email);
-          showDashboard(false, result.user.email);
-          showToast("ចូលគណនីជាមួយ Google បានជោគជ័យ!");
-        } catch (error) {
-          console.error("Google Login Error: ", error);
-          showToast("ការចូលគណនី Google មានបញ្ហា!", "error");
-        }
-      });
-
-      function showDashboard(adminStatus, identifier) {
-        isAdmin = adminStatus;
-        loginPage.classList.add("hidden");
-        dashboardPage.classList.remove("hidden");
-        userEmailSpan.textContent = identifier;
-
-        if (isAdmin) {
-          roleBadge.textContent = "ADMIN";
-          roleBadge.className =
-            "text-xs px-2 py-1 rounded font-bold bg-red-100 text-red-600";
-          adminFormContainer.classList.remove("hidden");
-          actionHeader.classList.remove("hidden");
-        } else {
-          roleBadge.textContent = "USER (ចូលមើល)";
-          roleBadge.className =
-            "text-xs px-2 py-1 rounded font-bold bg-green-100 text-green-600";
-          adminFormContainer.classList.add("hidden");
-          actionHeader.classList.add("hidden");
-        }
-        loadStudents();
-      }
-
-      logoutBtn.addEventListener("click", async () => {
-        sessionStorage.clear();
-        try {
-          await signOut(auth);
-        } catch (e) {}
-        dashboardPage.classList.add("hidden");
-        loginPage.classList.remove("hidden");
-        adminLoginForm.reset();
-        showToast("បានចាកចេញពីប្រព័ន្ធ!");
-      });
-
-      window.addEventListener("DOMContentLoaded", () => {
-        const savedRole = sessionStorage.getItem("role");
-        const savedIdentifier = sessionStorage.getItem("identifier");
-        if (savedRole) {
-          showDashboard(savedRole === "admin", savedIdentifier);
-        }
-      });
-
-      async function loadStudents() {
-        studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">កំពុងទាញយកទិន្នន័យ...</td></tr>`;
-        try {
-          const dbRefInstance = dbRef(database);
-          const snapshot = await get(child(dbRefInstance, "students"));
-          allStudents = [];
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            Object.keys(data).forEach((key) => {
-              allStudents.push({ id: key, ...data[key] });
-            });
-          }
-          filteredStudents = [...allStudents];
-          updateStats();
-          currentPage = 1;
-          displayStudents();
-        } catch (error) {
-          console.error("Error loading data: ", error);
-        }
-      }
-
-      function updateStats() {
-        document.getElementById("totalStudents").textContent =
-          allStudents.length;
-        const maleCount = allStudents.filter(
-          (s) => s.gender === "ប្រុស",
-        ).length;
-        const femaleCount = allStudents.filter(
-          (s) => s.gender === "ស្រី",
-        ).length;
-
-        // គណនាសរុបចំនួនអវត្តមានក្នុង១សប្តាហ៍បូកបញ្ចូលគ្នាទាំងអស់
-        const totalAbsenceCount = allStudents.reduce(
-          (sum, s) => sum + Number(s.absenceDays || 0),
-          0,
-        );
-
-        document.getElementById("totalMale").textContent = maleCount;
-        document.getElementById("totalFemale").textContent = femaleCount;
-        document.getElementById("totalAbsences").textContent =
-          totalAbsenceCount;
-
-        const uniqueClasses = new Set(allStudents.map((s) => s.classRoom)).size;
-        document.getElementById("totalClasses").textContent = uniqueClasses;
-      }
-
-      function displayStudents() {
-        studentTableBody.innerHTML = "";
-
-        if (filteredStudents.length === 0) {
-          studentTableBody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">មិនទាន់មានទិន្នន័យសិស្សនៅឡើយទេ</td></tr>`;
-          pageInfo.textContent = "ទំព័រ 0 នៃ 0";
-          prevPageBtn.disabled = true;
-          nextPageBtn.disabled = true;
-          return;
-        }
-
-        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
-        if (currentPage > totalPages) currentPage = totalPages;
-        if (currentPage < 1) currentPage = 1;
-
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        const paginatedData = filteredStudents.slice(start, end);
-
-        paginatedData.forEach((student) => {
-          const km = Number(student.scoreKm || 0);
-          const math = Number(student.scoreMath || 0);
-          const eng = Number(student.scoreEng || 0);
-          const gpa = ((km + math + eng) / 3).toFixed(2);
-          const absences = Number(student.absenceDays || 0);
-
-          let photo = student.photo || "https://via.placeholder.com/150";
-
-          let actionTd = "";
-          if (isAdmin) {
-            actionTd = `
-                        <td class="px-4 py-3 whitespace-nowrap text-center text-sm font-medium space-x-1 no-print">
-                            <button onclick="window.editStudent('${student.id}')" class="text-blue-600 hover:text-blue-900 bg-blue-50 px-2 py-1 rounded">កែប្រែ</button>
-                            <button onclick="window.deleteStudent('${student.id}')" class="text-red-600 hover:text-red-900 bg-red-50 px-2 py-1 rounded">លុប</button>
-                        </td>`;
-          }
-
-          const row = `
-                    <tr>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                            <img src="${photo}" class="w-10 h-10 rounded-full object-cover border" alt="Photo">
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${student.name}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${student.gender}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${student.classRoom}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-blue-600">${gpa}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm font-bold text-red-600">${absences} ដង</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-center text-sm">
-                            <button onclick="window.viewProfile('${student.id}')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs font-bold">មើលប្រវត្តិរូប</button>
-                        </td>
-                        ${actionTd}
-                    </tr>
-                `;
-          studentTableBody.innerHTML += row;
-        });
-
-        pageInfo.textContent = `ទំព័រ ${currentPage} នៃ ${totalPages || 1}`;
-        prevPageBtn.disabled = currentPage === 1;
-        nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
-      }
-
-      prevPageBtn.addEventListener("click", () => {
-        if (currentPage > 1) {
-          currentPage--;
-          displayStudents();
-        }
-      });
-
-      nextPageBtn.addEventListener("click", () => {
-        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
-        if (currentPage < totalPages) {
-          currentPage++;
-          displayStudents();
-        }
-      });
-
-      searchInput.addEventListener("input", (e) => {
-        const keyword = e.target.value.toLowerCase();
-        filteredStudents = allStudents.filter(
-          (s) =>
-            s.name.toLowerCase().includes(keyword) ||
-            s.classRoom.toLowerCase().includes(keyword),
-        );
-        currentPage = 1;
-        displayStudents();
-      });
-
-      // Submit Form (Add / Edit) with Realtime Database & Storage
-      studentForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!isAdmin) return alert("អ្នកមិនមានសិទ្ធិទេ!");
-
-        const id = studentIdInp.value;
-        const photoInput = document.getElementById("photoFile");
-
-        let photoUrl = "";
-        if (isEditing) {
-          const existing = allStudents.find((s) => s.id === id);
-          photoUrl = existing ? existing.photo : "";
-        }
-
-        if (photoInput.files.length > 0) {
-          const file = photoInput.files[0];
-          const sRef = storageRef(
-            storage,
-            "student_photos/" + Date.now() + "_" + file.name,
-          );
-          try {
-            const snapshot = await uploadBytes(sRef, file);
-            photoUrl = await getDownloadURL(snapshot.ref);
-          } catch (error) {
-            console.error("Storage Upload Error: ", error);
-            showToast("មានបញ្ហាក្នុងការផ្ទុករូបថតទៅកាន់ Storage!", "error");
-            return;
-          }
-        }
-
-        const studentData = {
-          name: document.getElementById("name").value,
-          gender: document.getElementById("gender").value,
-          age: Number(document.getElementById("age").value),
-          classRoom: document.getElementById("classRoom").value,
-          dob: document.getElementById("dob").value,
-          phone: document.getElementById("phone").value,
-          address: document.getElementById("address").value,
-          scoreKm: Number(document.getElementById("scoreKm").value),
-          scoreMath: Number(document.getElementById("scoreMath").value),
-          scoreEng: Number(document.getElementById("scoreEng").value),
-          absenceDays: Number(document.getElementById("absenceDays").value),
-          photo: photoUrl,
-          updatedAt: new Date().toISOString(),
-        };
-
-        try {
-          if (isEditing && id) {
-            await update(dbRef(database, "students/" + id), studentData);
-            showToast("បានកែប្រែព័ត៌មានសិស្សដោយជោគជ័យ!");
-            resetForm();
-          } else {
-            studentData.createdAt = new Date().toISOString();
-            const newStudentRef = push(dbRef(database, "students"));
-            await set(newStudentRef, studentData);
-            showToast("បានបន្ថែមសិស្សថ្មីដោយជោគជ័យ!");
-            studentForm.reset();
-          }
-          loadStudents();
-        } catch (error) {
-          console.error("Error saving to Realtime Database: ", error);
-          showToast("មានបញ្ហាក្នុងការរក្សាទុកទិន្នន័យ!", "error");
-        }
-      });
-
-      window.editStudent = function (id) {
-        const student = allStudents.find((s) => s.id === id);
-        if (!student) return;
-
-        studentIdInp.value = student.id;
-        document.getElementById("name").value = student.name;
-        document.getElementById("gender").value = student.gender;
-        document.getElementById("age").value = student.age;
-        document.getElementById("classRoom").value = student.classRoom;
-        document.getElementById("dob").value = student.dob || "";
-        document.getElementById("phone").value = student.phone || "";
-        document.getElementById("address").value = student.address || "";
-        document.getElementById("scoreKm").value = student.scoreKm || 0;
-        document.getElementById("scoreMath").value = student.scoreMath || 0;
-        document.getElementById("scoreEng").value = student.scoreEng || 0;
-        document.getElementById("absenceDays").value = student.absenceDays || 0;
-
-        formTitle.textContent = "កែប្រែព័ត៌មានសិស្ស (Admin)";
-        submitBtn.textContent = "កែប្រែទិន្នន័យ";
-        cancelEditBtn.classList.remove("hidden");
-        isEditing = true;
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      };
-
-      cancelEditBtn.addEventListener("click", () => {
-        resetForm();
-      });
-
-      function resetForm() {
-        studentForm.reset();
-        studentIdInp.value = "";
-        formTitle.textContent =
-          "បន្ថែមព័ត៌មានសិស្ស និងកំណត់អវត្តមានក្នុង១សប្តាហ៍ (Admin)";
-        submitBtn.textContent = "រក្សាទុកទិន្នន័យសិស្ស";
-        cancelEditBtn.classList.add("hidden");
-        isEditing = false;
-      }
-
-      window.deleteStudent = async function (id) {
-        if (!isAdmin) return alert("អ្នកគ្មានសិទ្ធិលុបទេ!");
-        if (confirm("តើអ្នកពិតជាចង់លុបទិន្នន័យសិស្សនេះមែនទេ?")) {
-          try {
-            await remove(dbRef(database, "students/" + id));
-            showToast("បានលុបទិន្នន័យសិស្សដោយជោគជ័យ!", "error");
-            loadStudents();
-          } catch (error) {
-            console.error("Error deleting from database: ", error);
-          }
-        }
-      };
-
-      // View Profile Modal
-      window.viewProfile = function (id) {
-        const student = allStudents.find((s) => s.id === id);
-        if (!student) return;
-
-        document.getElementById("modalPhoto").src =
-          student.photo || "https://via.placeholder.com/150";
-        document.getElementById("modalName").textContent = student.name;
-        document.getElementById("modalClass").textContent =
-          "ថ្នាក់: " + student.classRoom;
-        document.getElementById("modalGender").textContent = student.gender;
-        document.getElementById("modalAge").textContent =
-          student.age + " ឆ្នាំ";
-        document.getElementById("modalDob").textContent = student.dob || "-";
-        document.getElementById("modalPhone").textContent =
-          student.phone || "-";
-        document.getElementById("modalAddress").textContent =
-          student.address || "-";
-        document.getElementById("modalAbsence").textContent =
-          (student.absenceDays || 0) + " ដង";
-
-        const km = Number(student.scoreKm || 0);
-        const math = Number(student.scoreMath || 0);
-        const eng = Number(student.scoreEng || 0);
-        const gpa = ((km + math + eng) / 3).toFixed(2);
-
-        document.getElementById("modalScoreKm").textContent = km;
-        document.getElementById("modalScoreMath").textContent = math;
-        document.getElementById("modalScoreEng").textContent = eng;
-        document.getElementById("modalGpa").textContent = gpa;
-
-        profileModal.classList.remove("hidden");
-      };
-
-      closeModalBtn.addEventListener("click", () => {
-        profileModal.classList.add("hidden");
-      });
-      window.addEventListener("click", (e) => {
-        if (e.target === profileModal) profileModal.classList.add("hidden");
-      });
-
-      exportExcelBtn.addEventListener("click", () => {
-        if (allStudents.length === 0) {
-          showToast("មិនទាន់មានទិន្នន័យសម្រាប់ Export ទេ!", "error");
-          return;
-        }
-
-        let csvContent =
-          "\uFEFFល.រ,ឈ្មោះពេញ,ភេទ,អាយុ,ថ្នាក់រៀន,ភាសាខ្មែរ,គណិតវិទ្យា,អង់គ្លេស,មធ្យភាគ(GPA),អវត្តមាន(១សប្តាហ៍),លេខទូរស័ព្ទ,អាសយដ្ឋាន\n";
-        allStudents.forEach((s, index) => {
-          const km = Number(s.scoreKm || 0);
-          const math = Number(s.scoreMath || 0);
-          const eng = Number(s.scoreEng || 0);
-          const gpa = ((km + math + eng) / 3).toFixed(2);
-          const absences = Number(s.absenceDays || 0);
-
-          let row = [
-            index + 1,
-            `"${s.name || ""}"`,
-            `"${s.gender || ""}"`,
-            s.age || "",
-            `"${s.classRoom || ""}"`,
-            km,
-            math,
-            eng,
-            gpa,
-            absences,
-            `"${s.phone || ""}"`,
-            `"${s.address || ""}"`,
-          ];
-          csvContent += row.join(",") + "\n";
-        });
-
-        const blob = new Blob([csvContent], {
-          type: "text/csv;charset=utf-8;",
-        });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.setAttribute("href", url);
-        a.setAttribute("download", "Student_Comprehensive_Report.csv");
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        showToast("បានទាញយកឯកសារ Excel (CSV) រួចរាល់!");
-      });
-
-      printBtn.addEventListener("click", () => {
-        window.print();
-      });
-    </script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>
