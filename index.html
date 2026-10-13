@@ -140,7 +140,7 @@
       </div>
 
       <!-- Dashboard Summary Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <div
           class="bg-blue-50 border border-blue-200 p-4 rounded-xl flex items-center justify-between"
         >
@@ -171,6 +171,17 @@
           <span class="text-3xl">👧</span>
         </div>
         <div
+          class="bg-red-50 border border-red-200 p-4 rounded-xl flex items-center justify-between"
+        >
+          <div>
+            <p class="text-xs text-red-600 font-bold uppercase">អវត្តមានសរុប</p>
+            <h3 id="totalAbsences" class="text-2xl font-bold text-red-800">
+              0
+            </h3>
+          </div>
+          <span class="text-3xl">❌</span>
+        </div>
+        <div
           class="bg-purple-50 border border-purple-200 p-4 rounded-xl flex items-center justify-between"
         >
           <div>
@@ -185,13 +196,13 @@
         </div>
       </div>
 
-      <!-- ទម្រង់បន្ថែម/កែប្រែទិន្នន័យសិស្ស (សម្រាប់តែ Admin ប៉ុណ្ណោះ) -->
+      <!-- ទម្រង់បន្ថែម/កែប្រែទិន្នន័យសិស្ស (សម្រាប់តែ Admin កំណត់វត្តមាន និងព័ត៌មានផ្សេងៗ) -->
       <div
         id="adminFormContainer"
         class="hidden mb-6 bg-blue-50 p-4 rounded-xl border border-blue-200 no-print"
       >
         <h2 id="formTitle" class="text-lg font-semibold text-blue-700 mb-3">
-          បន្ថែមព័ត៌មានសិស្សថ្មី (Admin)
+          បន្ថែមព័ត៌មាន និងកំណត់វត្តមានសិស្ស (Admin)
         </h2>
         <form
           id="studentForm"
@@ -289,7 +300,7 @@
             />
           </div>
 
-          <!-- ផ្នែកបញ្ចូលពិន្ទុ និងវត្តមាន -->
+          <!-- ផ្នែក Admin កំណត់ពិន្ទុ និងវត្តមាន -->
           <div
             class="md:col-span-3 lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-2 pt-2 border-t border-blue-200"
           >
@@ -333,12 +344,13 @@
               />
             </div>
             <div>
-              <label class="block text-xs font-medium text-gray-700"
-                >ស្ថានភាពវត្តមាន</label
+              <label
+                class="block text-xs font-medium text-gray-700 font-bold text-blue-700"
+                >កំណត់វត្តមាន (Admin)</label
               >
               <select
                 id="attendanceStatus"
-                class="w-full p-1.5 text-sm border rounded-md bg-white"
+                class="w-full p-1.5 text-sm border rounded-md bg-white font-medium border-blue-400"
               >
                 <option value="មក">មកទៀងទាត់</option>
                 <option value="យឺត">យឺតយ៉ាវ</option>
@@ -582,17 +594,16 @@
         signOut,
       } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
       const firebaseConfig = {
-        apiKey: "AIzaSyCcPdzU1Pacj6bT3MhwuKgZI3dGaBHQYMg",
-        authDomain: "fir-e5642.firebaseapp.com",
+        apiKey: "AIzaSyBgqJbjuy0O6SNSE1904NVaxoCyhNW8Dq0",
+        authDomain: "memeprompt-loginaccount.firebaseapp.com",
         databaseURL:
-          "https://fir-e5642-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "fir-e5642",
-        storageBucket: "fir-e5642.firebasestorage.app",
-        messagingSenderId: "1049370185512",
-        appId: "1:1049370185512:web:cac59e770f126929c0ca1d",
-        measurementId: "G-0SX8QNHQK7",
+          "https://memeprompt-loginaccount-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "memeprompt-loginaccount",
+        storageBucket: "memeprompt-loginaccount.firebasestorage.app",
+        messagingSenderId: "866437301238",
+        appId: "1:866437301238:web:55da70143b3a9db4b13dd7",
+        measurementId: "G-LEECPXS93S",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -761,8 +772,14 @@
         const femaleCount = allStudents.filter(
           (s) => s.gender === "ស្រី",
         ).length;
+        const absenceCount = allStudents.filter(
+          (s) => s.attendance === "អវត្តមាន",
+        ).length;
+
         document.getElementById("totalMale").textContent = maleCount;
         document.getElementById("totalFemale").textContent = femaleCount;
+        document.getElementById("totalAbsences").textContent = absenceCount;
+
         const uniqueClasses = new Set(allStudents.map((s) => s.classRoom)).size;
         document.getElementById("totalClasses").textContent = uniqueClasses;
       }
@@ -908,13 +925,13 @@
         try {
           if (isEditing && id) {
             await update(dbRef(database, "students/" + id), studentData);
-            showToast("បានកែប្រែព័ត៌មានសិស្សដោយជោគជ័យ!");
+            showToast("បានកែប្រែព័ត៌មាន និងវត្តមានសិស្សដោយជោគជ័យ!");
             resetForm();
           } else {
             studentData.createdAt = new Date().toISOString();
             const newStudentRef = push(dbRef(database, "students"));
             await set(newStudentRef, studentData);
-            showToast("បានបន្ថែមសិស្សថ្មីដោយជោគជ័យ!");
+            showToast("បានបន្ថែមសិស្ស និងកំណត់វត្តមានថ្មីដោយជោគជ័យ!");
             studentForm.reset();
           }
           loadStudents();
@@ -942,7 +959,7 @@
         document.getElementById("attendanceStatus").value =
           student.attendance || "មក";
 
-        formTitle.textContent = "កែប្រែព័ត៌មានសិស្ស (Admin)";
+        formTitle.textContent = "កែប្រែព័ត៌មាន និងវត្តមានសិស្ស (Admin)";
         submitBtn.textContent = "កែប្រែទិន្នន័យ";
         cancelEditBtn.classList.remove("hidden");
         isEditing = true;
@@ -956,7 +973,7 @@
       function resetForm() {
         studentForm.reset();
         studentIdInp.value = "";
-        formTitle.textContent = "បន្ថែមព័ត៌មានសិស្សថ្មី (Admin)";
+        formTitle.textContent = "បន្ថែមព័ត៌មាន និងកំណត់វត្តមានសិស្ស (Admin)";
         submitBtn.textContent = "រក្សាទុកទិន្នន័យសិស្ស";
         cancelEditBtn.classList.add("hidden");
         isEditing = false;
